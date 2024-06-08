@@ -1,7 +1,7 @@
-#include "src/Graphics/CrazySpaceMeatLand/src/GraphicObject_TextureLight.h"
-#include "Model.h"
+#include "GraphicObject_TextureLight.h"
+#include "../Model/Model.h"
+#include "../Camera.h"
 #include <assert.h>
-#include "src/Graphics/CrazySpaceMeatLand/src/Camera.h"
 
 
 GraphicObject_TextureLight::GraphicObject_TextureLight(ShaderColorLightTexture* shader, Model* mod)

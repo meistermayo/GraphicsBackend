@@ -3,9 +3,10 @@
 
 #include <string>
 
+//#define BACKEND_OGL
 #define BACKEND_D3D
 
-#include "src/Graphics/CrazySpaceMeatLand/src/Align16.h"
+#include "Align16.h"
 
 class Model;
 struct StandardVertex;
@@ -13,13 +14,13 @@ struct TriangleByIndex;
 
 #ifdef BACKEND_D3D
 
+#include <windows.h>
 #include <WindowsX.h>
-#include "src/Graphics/CrazySpaceMeatLand/DX Application/Resource.h"
+#include <d3d11.h>
+#include <DirectXTex.h>
 #include <cassert>
-#include "src/Graphics/CrazySpaceMeatLand/src/DXApp.h"
-#include "src/i Engine/i.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/Math/Vect.h"
-#include "src/i Engine/Input/Keys.h" // todo -- no no
+#include "Math/Vect.h"
+#include "Keys.h"
 
 #endif
 
@@ -33,7 +34,7 @@ protected:
 	virtual int privInitialize() = 0;
 	virtual void privInitApp() = 0;
 	virtual bool privStillOpen() = 0;
-	virtual void privPoll() = 0;
+	virtual int privPoll() = 0;
 	virtual void privPrepare() = 0;
 	virtual void privPresent() = 0;
 	virtual void privCleanupApp() = 0;
@@ -53,6 +54,9 @@ protected:
 
 public:
 	virtual void OnKey(KEY_CODE key, bool down) = 0;
+	virtual void OnMouseMove(int x, int y) = 0;
+	virtual void OnMouseWheel(int w) = 0;
+
 };
 
 struct GraphicsDevice : public Align16
@@ -278,6 +282,7 @@ class D3D_GraphicsBackend : public GraphicsBackend_Base
 	Vect BackgroundColor;
 
 	bool keyStates[KEY_CODE::KEY_COUNT] { false };
+	int mx, my, mw;
 
 	// DX application elements
 	GraphicsDevice mDev;						// Connects to the graphics card
@@ -300,7 +305,7 @@ protected:
 	virtual int privInitialize() override;
 	virtual void privInitApp() override;
 	virtual bool privStillOpen() override;
-	virtual void privPoll() override;
+	virtual int privPoll() override;
 	virtual void privPrepare() override;
 	virtual void privPresent() override;
 	virtual void privCleanupApp() override;
@@ -345,6 +350,8 @@ protected:
 
 public:
 	virtual void OnKey(KEY_CODE key, bool down) override { keyStates[key] = down; }
+	virtual void OnMouseMove(int x, int y) override { mx = x; my = y; }
+	virtual void OnMouseWheel(int w) override { mw = w; }
 
 protected:
 	HRESULT InitWindow()
@@ -357,12 +364,12 @@ protected:
 		wcex.cbClsExtra = 0;
 		wcex.cbWndExtra = 0;
 		wcex.hInstance = hInst;
-		wcex.hIcon = LoadIcon(hInst, (LPCTSTR)IDI_TUTORIAL1);
+		wcex.hIcon = LoadIcon(hInst, (LPCTSTR)"IDI_TUTORIAL1");
 		wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 		wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 		wcex.lpszMenuName = nullptr;
-		wcex.lpszClassName = (LPCSTR)L"MainlWindowClass";
-		wcex.hIconSm = LoadIcon(wcex.hInstance, (LPCTSTR)IDI_TUTORIAL1);
+		wcex.lpszClassName = L"MainlWindowClass";
+		wcex.hIconSm = LoadIcon(wcex.hInstance, (LPCTSTR)"IDI_TUTORIAL1");
 		if (!RegisterClassEx(&wcex))
 			return E_FAIL;
 
@@ -370,7 +377,7 @@ protected:
 		RECT rc = { 0, 0, 1280, 720}; // Initial window dimentions. 
 
 		AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-		hWnd = CreateWindow((LPCSTR)L"MainlWindowClass", (LPCSTR)L"Main Window",
+		hWnd = CreateWindow(L"MainlWindowClass", L"Main Window",
 			WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
 			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInst,
 			nullptr);
@@ -408,7 +415,7 @@ public:
 	static int Initialize() { return Instance()->privInitialize(); }
 	static void InitApp() { Instance()->privInitApp(); }
 	static bool StillOpen() { return Instance()->privStillOpen(); }
-	static void Poll() { Instance()->privPoll(); }
+	static int Poll() { return Instance()->privPoll(); }
 	static void Prepare() { Instance()->privPrepare(); }
 	static void Present() { Instance()->privPresent(); }
 	static void CleanupApp() { Instance()->privCleanupApp(); }
@@ -428,6 +435,8 @@ public:
 };
 
 #ifdef BACKEND_D3D
+std::wstring stringToWString(std::string inStr);
+
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	D3D_GraphicsBackend* pBackend = (D3D_GraphicsBackend*)GraphicsBackend::Instance();
@@ -463,22 +472,22 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 	case WM_MBUTTONDOWN:
 	case WM_RBUTTONDOWN:
 		SetCapture(pBackend->GetWindowHandle());
-		i::BackendOnMouseButton(wParam, 1);
+		pBackend->OnKey(static_cast<KEY_CODE>(wParam), true);
 		break;
 
 	case WM_LBUTTONUP:
 	case WM_MBUTTONUP:
 	case WM_RBUTTONUP:
 		ReleaseCapture();
-		i::BackendOnMouseButton(wParam, 0);
+		pBackend->OnKey(static_cast<KEY_CODE>(wParam), false);
 		break;
 
 	case WM_MOUSEMOVE:
-		i::BackendOnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		pBackend->OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		break;
 
 	case WM_MOUSEWHEEL:
-		i::BackendOnMouseWheel(GET_WHEEL_DELTA_WPARAM(wParam));
+		pBackend->OnMouseWheel(GET_WHEEL_DELTA_WPARAM(wParam));
 		break;
 
 	default:

@@ -4,7 +4,7 @@
 #ifndef _GraphicObject_Base
 #define _GraphicObject_Base
 
-#include "Math/Matrix.h"
+#include "../Math/Matrix.h"
 
 class Model;
 class ShaderMeshData;

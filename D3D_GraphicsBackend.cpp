@@ -1,8 +1,5 @@
 #include "GraphicsBackend.h"
-
-#include "src/Graphics/CrazySpaceMeatLand/DX Application/Resource.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/DXApp.h"
-#include "src/i Engine/i.h"
+#include "d3dUtil.h"
 
 #ifdef BACKEND_D3D
 
@@ -44,7 +41,7 @@ void D3D_GraphicsBackend::privInitApp()
 	// Get window caption
 	const int MAX_LABEL_LENGTH = 100; // probably overkill...
 	WCHAR str[MAX_LABEL_LENGTH];
-	GetWindowText(hWnd, (LPSTR)str, MAX_LABEL_LENGTH);
+	GetWindowText(hWnd, str, MAX_LABEL_LENGTH);
 	mMainWndCaption = str;
 
 	// Initialize DX11
@@ -53,13 +50,15 @@ void D3D_GraphicsBackend::privInitApp()
 
 bool D3D_GraphicsBackend::privStillOpen()  { return WM_QUIT != msg.message; }
 
-void D3D_GraphicsBackend::privPoll()
+int D3D_GraphicsBackend::privPoll()
 {
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+
+	return (int)msg.wParam;
 }
 
 void D3D_GraphicsBackend::privPrepare()

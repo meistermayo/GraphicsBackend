@@ -1,7 +1,7 @@
 #include "GraphicObject_ColorLight.h"
-#include "Model.h"
-#include "ShaderColor.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/Camera.h"
+#include "../Model/Model.h"
+#include "../Shader/ShaderColor.h"
+#include "../Camera.h"
 #include <assert.h>
 
 GraphicObject_ColorLight::GraphicObject_ColorLight(ShaderColorLight* shader, int meshCount, Model* mod, const Vect &amb, const Vect &dif, const Vect& sp)

@@ -1,9 +1,10 @@
 #ifndef _TerrainModel
 #define _TerrainModel
 
-#include "Math/Matrix.h"
+#include "../Math/Matrix.h"
 #include <tuple>
 #include <d3d11.h>
+#include <string>
 #include "DirectXTex.h"
 #include "Model.h"
 

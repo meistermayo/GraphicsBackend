@@ -1,5 +1,6 @@
 #include "TerrainModel.h"
-#include "d3dUtil.h"
+#include "../d3dUtil.h"
+#include "Graphics/GraphicsBackend.h"
 #include <assert.h>
 
 TerrainModel::TerrainModel(std::string heightmapFile, float len, float maxheight, float ytrans, int RepeatU, int RepeatV)
@@ -7,7 +8,7 @@ TerrainModel::TerrainModel(std::string heightmapFile, float len, float maxheight
 {
 	ytrans;
 	DirectX::ScratchImage scrtTex;
-	HRESULT hr = LoadFromTGAFile((LPCWSTR)heightmapFile.c_str(), nullptr, scrtTex); // todo
+	HRESULT hr = LoadFromTGAFile(stringToWString(heightmapFile).c_str(), nullptr, scrtTex); // todo
 	assert(SUCCEEDED(hr));
 
 	const DirectX::Image* hgtmap = scrtTex.GetImage(0, 0, 0);

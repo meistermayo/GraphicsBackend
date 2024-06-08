@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable : 4201)
 
 #include "../Align16.h"
 
@@ -249,3 +250,5 @@ public:
 		};
 	};
 };
+
+#pragma warning(default : 4201)

@@ -1,9 +1,10 @@
 #include "GraphicObject_Sprite.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/Model.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/ShaderTexture.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/Image.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/Math/Matrix.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/Camera.h"
+
+#include "../Camera.h"
+#include "../Math/Matrix.h"
+#include "../Model/Model.h"
+#include "../Shader/ShaderTexture.h"
+#include "../Texture/Image.h"
 
 GraphicObject_Sprite::GraphicObject_Sprite(Model* model, ShaderBase* shader, Image* image, Rect* rect)
 {

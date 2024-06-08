@@ -1,11 +1,12 @@
 #include <assert.h>
-#include "File.h"
 #include "Model.h"
+
+#include "../d3dUtil.h"
+#include "../GraphicsBackend.h"
+#include "File.h"
 #include "ModelTools.h"
-#include "d3dUtil.h"
 #include "AzulFileHdr.h"
 #include "MeshSeparator.h"
-#include "GraphicsBackend.h"
 
 Model::Model(StandardVertex *pVerts, int nverts, TriangleByIndex *ptlist, int ntri)
 {

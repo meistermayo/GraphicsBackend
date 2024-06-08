@@ -1,10 +1,9 @@
 #ifndef GRAPHICS_OBJECT_SPRITE_H
 #define GRAPHICS_OBJECT_SPRITE_H
 
-#include <sb6.h>
 #include "GraphicObject_Base.h"
-#include "Texture.h"
-#include "Image.h"
+#include "../Texture/Texture.h"
+#include "../Texture/Image.h"
 
 class Camera;
 class ShaderBase;

@@ -2,8 +2,8 @@
 #define SKYBOX_H
 
 #include "Model.h"
-#include "ShaderTexture.h"
-#include "Texture.h"
+#include "Graphics/Shader/ShaderTexture.h"
+#include "Graphics/Texture/Texture.h"
 
 class Skybox {
 

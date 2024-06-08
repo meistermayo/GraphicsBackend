@@ -5,7 +5,7 @@
 #define _GraphicObject_Color
 
 #include "GraphicObject_Base.h"
-#include "Math/Vect.h"
+#include "../Math/Vect.h"
 
 class ShaderColor;
 

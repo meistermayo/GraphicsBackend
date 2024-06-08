@@ -1,8 +1,7 @@
 #include "GraphicObject_Texture.h"
-#include "Model.h"
+#include "../Model/Model.h"
+#include "../Camera.h"
 #include <assert.h>
-#include "src/Graphics/CrazySpaceMeatLand/src/Camera.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/Camera.h"
 
 GraphicObject_Texture::GraphicObject_Texture(ShaderTexture* shader,Model* mod)
 {

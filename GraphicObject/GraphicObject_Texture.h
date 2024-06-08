@@ -4,9 +4,9 @@
 #define _GraphicObject_Texture
 
 #include "GraphicObject_Base.h"
-#include "Math/Vect.h"
-#include "Texture.h"
-#include "ShaderTexture.h"
+#include "../Texture/Texture.h"
+#include "../Shader/ShaderTexture.h"
+#include "../Math/Vect.h"
 
 class GraphicObject_Texture : public GraphicObject_Base
 {

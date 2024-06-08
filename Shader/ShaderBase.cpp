@@ -1,10 +1,11 @@
-#include "ShaderBase.h"
-#include "GraphicsBackend.h"
 #include <d3d11.h>
-#include "d3dUtil.h"
 #include <d3dcompiler.h>
 #include <string>
 #include <assert.h>
+
+#include "ShaderBase.h"
+#include "../GraphicsBackend.h"
+#include "../d3dUtil.h"
 
 ShaderBase::ShaderBase(std::string filename)
 {

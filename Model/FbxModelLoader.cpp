@@ -1,10 +1,11 @@
-#include "FbxModelLoader.h"
-#include "Math/Constants.h"
-#include "Model.h"
 #include <vector>
 #include <algorithm>
 #include <assert.h>
 #include <iostream>
+
+#include "FbxModelLoader.h"
+#include "Model.h"
+#include "../Math/Constants.h"
 
 FbxModelLoader::FbxModelLoader()
 {

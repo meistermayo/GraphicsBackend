@@ -1,7 +1,8 @@
 #pragma once
 #ifndef _LightStructs
 #define _LightStructs
-#include "Math/Vect.h"
+
+#include "../Math/Vect.h"
 
 struct Material
 {

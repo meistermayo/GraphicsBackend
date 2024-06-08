@@ -2,9 +2,9 @@
 #define _GraphicObject_Color
 
 #include "GraphicObject_Base.h"
-#include "Math/Vect.h"
-#include "ShaderColor.h"
-#include "ShaderColorLight.h"
+#include "../Math/Vect.h"
+#include "../Shader/ShaderColor.h"
+#include "../Shader/ShaderColorLight.h"
 
 class GraphicObject_ColorLight : public GraphicObject_Base
 {

@@ -1,8 +1,8 @@
 #include "GraphicObject_Wireframe.h"
-#include "Model.h"
-#include "ShaderWireframe.h"
+#include "../Model/Model.h"
+#include "../Shader/ShaderWireframe.h"
 #include <assert.h>
-#include "src/Graphics/CrazySpaceMeatLand/src/Camera.h"
+#include "../Camera.h"
 
 GraphicObject_Wireframe::GraphicObject_Wireframe(ShaderWireframe* shader, int meshCount, Model* mod, const Vect& color)
 {

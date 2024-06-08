@@ -1,6 +1,8 @@
-#include "Skybox.h"
-#include "d3dUtil.h"
 #include <cassert>
+
+#include "Skybox.h"
+
+#include "../d3dUtil.h"
 
 Skybox::Skybox(ShaderTexture* pShader, Texture* pTexture )
 {

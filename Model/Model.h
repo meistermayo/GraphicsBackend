@@ -1,9 +1,9 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "Math/Vect.h"
-#include "Align16.h"
-#include "Math/Matrix.h"
+#include "../Math/Vect.h"
+#include "../Align16.h"
+#include "../Math/Matrix.h"
 #include "FbxModelLoader.h"
 
 class MeshSeparator;

@@ -2,7 +2,7 @@
 #define _FbxModelLoader
 #include <fbxsdk.h>
 #include <vector>
-#include "Math/Vect.h"
+#include "../Math/Vect.h"
 
 struct StandardVertex;
 struct TriangleByIndex;

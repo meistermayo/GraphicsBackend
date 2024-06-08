@@ -1,8 +1,10 @@
-#include "ShaderWireframe.h"
-#include "d3dUtil.h"
 #include <d3d11.h>
 #include <assert.h>
-#include "GraphicsBackend.h"
+
+#include "ShaderWireframe.h"
+
+#include "../d3dUtil.h"
+#include "../GraphicsBackend.h"
 
 
 ShaderWireframe::ShaderWireframe(std::string filename)

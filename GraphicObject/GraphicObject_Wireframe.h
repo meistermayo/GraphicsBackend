@@ -5,7 +5,7 @@
 #define _GraphicObject_Wireframe
 
 #include "GraphicObject_Base.h"
-#include "Math/Vect.h"
+#include "../Math/Vect.h"
 
 class ShaderWireframe;
 

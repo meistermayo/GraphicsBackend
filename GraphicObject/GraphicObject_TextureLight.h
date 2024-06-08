@@ -4,9 +4,9 @@
 #define _GraphicObject_TextureL
 
 #include "GraphicObject_Base.h"
-#include "Math/Vect.h"
-#include "Texture.h"
-#include "ShaderColorLightTexture.h"
+#include "../Math/Vect.h"
+#include "../Texture/Texture.h"
+#include "../Shader/ShaderColorLightTexture.h"
 
 class GraphicObject_TextureLight : public GraphicObject_Base
 {

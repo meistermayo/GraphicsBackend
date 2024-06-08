@@ -1,8 +1,8 @@
 #include "ShaderColor.h"
-#include "d3dUtil.h"
+#include "../d3dUtil.h"
+#include "../GraphicsBackend.h"
 #include <d3d11.h>
 #include <assert.h>
-#include "GraphicsBackend.h"
 
 ShaderColor::ShaderColor(std::string filename)
 	: ShaderBase(filename)

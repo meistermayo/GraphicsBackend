@@ -1,5 +1,5 @@
 #include "GraphicObject_Base.h"
-#include "Model.h"
+#include "../Model/Model.h"
 #include <assert.h>
 
 

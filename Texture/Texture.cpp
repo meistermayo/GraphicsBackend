@@ -1,8 +1,8 @@
 #include "Texture.h"
-#include "d3dUtil.h"
-#include "DirectXTex.h"
 #include <assert.h>
-#include "GraphicsBackend.h"
+#include "DirectXTex.h"
+#include "../d3dUtil.h"
+#include "../GraphicsBackend.h"
 
 Texture::Texture(std::string filepath)
 {

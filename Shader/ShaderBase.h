@@ -4,7 +4,7 @@
 #ifndef _ShaderBase
 #define _ShaderBase
 
-#include "Math/Matrix.h"
+#include "../Math/Matrix.h"
 #include <string>
 
 struct ShaderInterface;

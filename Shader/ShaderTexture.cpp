@@ -1,8 +1,8 @@
 #include "ShaderTexture.h"
-#include <assert.h>
 #include "DirectXTex.h"
-#include "d3dUtil.h"
-#include "GraphicsBackend.h"
+#include "../d3dUtil.h"
+#include "../GraphicsBackend.h"
+#include <assert.h>
 
 ShaderTexture::ShaderTexture(std::string filename) :
 	ShaderBase(filename)

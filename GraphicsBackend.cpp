@@ -1,5 +1,5 @@
 #include "GraphicsBackend.h"
-#include "src/Graphics/CrazySpaceMeatLand/src/Model.h"
+#include "Model/Model.h"
 
 #ifdef BACKEND_D3D
 #include <d3d11.h>
@@ -189,7 +189,12 @@ void ShaderInterface::BuildShaders(std::string filename)
 #ifdef BACKEND_D3D
 	LPCSTR wVsModel = "vs_4_0";
 	LPCSTR wPsModel = "ps_4_0";
-	std::wstring wFilestr = stringToWString(filename + GraphicsBackend::GetVertexShaderExt()); // todo - check if this ext exists
+
+	if (filename.find_last_of('.') == std::string::npos)
+	{
+		filename += GraphicsBackend::GetVertexShaderExt();
+	}
+	std::wstring wFilestr = stringToWString(filename);
 	const WCHAR* wFilename = wFilestr.c_str();
 
 	pVSBlob = nullptr;

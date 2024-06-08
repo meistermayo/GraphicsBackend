@@ -5,7 +5,7 @@
 #define _ShaderColorLight
 
 #include "ShaderBase.h"
-#include "Math/Matrix.h"
+#include "../Math/Matrix.h"
 
 template <typename T>
 struct GenericBufferObject;

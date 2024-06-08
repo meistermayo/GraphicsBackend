@@ -1,11 +1,11 @@
-#include "ModelTools.h"
-//#include "Enum.h"
-//#include <math.h>
-#include "Math/Matrix.h"
-#include "Math/Constants.h"
 #include <assert.h>
+
+#include "ModelTools.h"
+
+#include "../Math/Matrix.h"
+#include "../d3dUtil.h"
+#include "../Math/Constants.h"
 #include "Model.h"
-#include "d3dUtil.h"
 #include "math.h"
 
 /// Creates the unit box centered at the origin

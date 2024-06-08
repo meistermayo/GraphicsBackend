@@ -1,8 +1,8 @@
 #include "GraphicObject_Color.h"
-#include "Model.h"
-#include "ShaderColor.h"
+#include "../Model/Model.h"
+#include "../Shader/ShaderColor.h"
+#include "../Camera.h"
 #include <assert.h>
-#include "src/Graphics/CrazySpaceMeatLand/src/Camera.h"
 
 GraphicObject_Color::GraphicObject_Color(ShaderColor* shader, int meshCount, Model* mod, const Vect& color)
 {
