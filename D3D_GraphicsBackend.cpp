@@ -79,6 +79,9 @@ void D3D_GraphicsBackend::privCleanupApp()
 	ReleaseAndDeleteCOMobject(mpDepthStencilView);
 	ReleaseAndDeleteCOMobject(mSwapChain);
 	ReleaseAndDeleteCOMobject(mCon.md3dImmediateContext);
+	
+	ReleaseAndDeleteCOMobject(rsFill);
+	ReleaseAndDeleteCOMobject(rsWireframe);
 
 	// Must be done BEFORE the device is released
 	// See http://masterkenth.com/directx-leak-debugging/
@@ -116,6 +119,16 @@ void D3D_GraphicsBackend::privDrawIndexed(int indexCount, int startIndex, int ba
 void D3D_GraphicsBackend::privSetPrimitiveTopologyAsTriList() const
 {
 	mCon.md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void D3D_GraphicsBackend::privSetDrawModeFill() const
+{
+	mCon.md3dImmediateContext->RSSetState(rsFill);
+}
+
+void D3D_GraphicsBackend::privSetDrawModeWireframe() const
+{
+	mCon.md3dImmediateContext->RSSetState(rsWireframe);
 }
 
 void D3D_GraphicsBackend::InitDirect3D()
@@ -208,11 +221,13 @@ void D3D_GraphicsBackend::InitDirect3D()
 	rd.MultisampleEnable = true;  // Does not in fact turn on/off multisample: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476198(v=vs.85).aspx
 	rd.AntialiasedLineEnable = true;
 
-	ID3D11RasterizerState* rs;
-	mDev.md3dDevice->CreateRasterizerState(&rd, &rs);
+	mDev.md3dDevice->CreateRasterizerState(&rd, &rsFill);
 
-	mCon.md3dImmediateContext->RSSetState(rs);
-	ReleaseAndDeleteCOMobject(rs); // we can release this resource since we won't be changing it any further
+	mCon.md3dImmediateContext->RSSetState(rsFill);
+
+	rd.FillMode = D3D11_FILL_WIREFRAME;
+	mDev.md3dDevice->CreateRasterizerState(&rd, &rsWireframe);
+
 	//*/
 
 	// We must turn on the abilty to process depth during rendering.

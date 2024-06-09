@@ -2,6 +2,7 @@
 
 #include "GraphicsObject_Wireframe.h"
 #include "../Camera.h"
+#include "../GraphicsBackend.h"
 #include "../Model/Model.h"
 #include "../Shader/ShaderWireframe.h"
 
@@ -21,6 +22,8 @@ GraphicsObject_Wireframe::~GraphicsObject_Wireframe()
 
 void GraphicsObject_Wireframe::Render(Camera* inCamera)
 {
+	GraphicsBackend::SetDrawModeWireframe();
+
 	pModel->BindVertexIndexBuffers();
 	pShader->SendWorldColor(mWorld, mColor);
 	pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
@@ -29,4 +32,6 @@ void GraphicsObject_Wireframe::Render(Camera* inCamera)
 	{
 		pModel->RenderMesh(i);
 	}
+
+	GraphicsBackend::SetDrawModeFill();
 }
