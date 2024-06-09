@@ -1,11 +1,12 @@
 #pragma once
-#pragma warning(disable : 4201)
 
 #include "../Align16.h"
 
 #include <xmmintrin.h>
 #include <smmintrin.h>  
 #include <math.h>
+
+#pragma warning(disable : 4201)
 
 class Matrix;
 

@@ -1,7 +1,8 @@
 #pragma once
-#pragma warning(disable : 4201)
 
 #include "Vect.h"
+
+#pragma warning(disable : 4201)
 
 class Quat
 {

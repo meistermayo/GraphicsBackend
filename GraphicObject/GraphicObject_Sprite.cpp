@@ -6,30 +6,33 @@
 #include "../Shader/ShaderTexture.h"
 #include "../Texture/Image.h"
 
-GraphicObject_Sprite::GraphicObject_Sprite(Model* model, ShaderBase* shader, Image* image, Rect* rect)
+GraphicObject_Sprite::GraphicObject_Sprite(Model* inModel, ShaderTexture* inShader, Image* inImage, Rect* inRect)
 {
-	pWorld = new Matrix(Matrix::Identity);
-	pModel = model;
-	pShader = shader;
-	pImage = image;
-	rect;
-	// rect?...
+	pModel = inModel;
+	pShader = inShader;
+	pImage = inImage;
+
+	origPosX = inRect->x;
+	origPosY = inRect->y;
+	origWidth = inRect->width;
+	origHeight = inRect->height;
+
+	mWorld = Matrix::Identity;
 }
 
 GraphicObject_Sprite::~GraphicObject_Sprite()
 {
-	delete pWorld;
 }
 
 void GraphicObject_Sprite::Render(Camera* inCamera)
 {
-	//pShader->SendWorldAndMaterial(World,material->Ambient,material->Diffuse,material->Specular); 
 	pModel->BindVertexIndexBuffers();
+	pShader->SendWorld(mWorld);
+	pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
+	pShader->SetToContext();
+
 	for (int i = 0; i < pModel->GetMeshCount(); i++)
 	{
-		((ShaderTexture*)pShader)->SendWorld(*pWorld);
-		((ShaderTexture*)pShader)->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
-		pShader->SetToContext();
 		pModel->RenderMesh(i);
 	}
 }

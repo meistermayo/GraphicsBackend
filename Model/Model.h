@@ -128,7 +128,8 @@ public:
 	};
 
 protected:
-	Model() {}
+	Model()
+	: pStdVerts(nullptr), pTriList(nullptr), pVectList(nullptr) {}
 
 public:
 	Model(StandardVertex *pVerts, int nverts, TriangleByIndex *ptlist, int ntri);

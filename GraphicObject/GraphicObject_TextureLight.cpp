@@ -1,52 +1,52 @@
-#include "GraphicObject_TextureLight.h"
-#include "../Model/Model.h"
-#include "../Camera.h"
 #include <assert.h>
 
+#include "GraphicObject_TextureLight.h"
+#include "../Camera.h"
+#include "../Model/Model.h"
+#include "../Shader/ShaderColorLightTexture.h"
+#include "../Texture/Texture.h"
 
-GraphicObject_TextureLight::GraphicObject_TextureLight(ShaderColorLightTexture* shader, Model* mod)
+
+GraphicObject_TextureLight::GraphicObject_TextureLight(ShaderColorLightTexture* inShader, Model* inModel)
 {
-	ambColor = Vect::One;
-	difColor = Vect::One;
-	pShader = shader;
-	SetModel(mod);
-	tex = new Texture * [mod->GetMeshCount()];
-	pWorld = new Matrix(Matrix::Identity);
+	mAmbColor = Vect::One;
+	mDifColor = Vect::One;
+	pShader = inShader;
+	pModel = inModel;
+	pTex = new Texture* [inModel->GetMeshCount()];
+	mWorld = Matrix::Identity;
 }
 
-GraphicObject_TextureLight::GraphicObject_TextureLight(Model* mod, ShaderBase* shader, Texture* inTexture, const Vect& inAmb, const Vect& inDif)
+GraphicObject_TextureLight::GraphicObject_TextureLight(Model* inModel, ShaderColorLightTexture* inShader, Texture* inTexture, const Vect& inAmb, const Vect& inDif)
 {
-	ambColor = inAmb;
-	ambColor = inDif;
-
-	pShader = (ShaderColorLightTexture*)shader;
-	SetModel(mod);
-
-	tex = new Texture * [mod->GetMeshCount()];
-	tex[0] = inTexture;
-
-	pWorld = new Matrix(Matrix::Identity);
+	mAmbColor = inAmb;
+	mDifColor = inDif;
+	pShader = inShader;
+	pModel = inModel;
+	pTex = new Texture* [inModel->GetMeshCount()];
+	pTex[0] = inTexture;
+	mWorld = Matrix::Identity;
 }
 
 GraphicObject_TextureLight::~GraphicObject_TextureLight() {
-	delete[] tex;
+	delete[] pTex;
 }
 
-void GraphicObject_TextureLight::SetTexture(Texture* _tex, int i)
+void GraphicObject_TextureLight::SetTexture(Texture* inTex, int i)
 {
 	assert(pModel->ValidMeshNum(i));
-	this->tex[i] = _tex;
+	this->pTex[i] = inTex;
 }
 
 void GraphicObject_TextureLight::Render(Camera* inCamera)
 {
 	pModel->BindVertexIndexBuffers();
+	pShader->SendWorldAndMaterial(mWorld, mAmbColor, mDifColor, Vect::One);
+	pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
+	pShader->SetToContext();
 	for (int i = 0; i < pModel->GetMeshCount(); i++)
 	{
-		tex[i]->SetToContext();
-		pShader->SendWorldAndMaterial(*pWorld, ambColor, difColor, Vect::One);
-		pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
-		pShader->SetToContext();
+		pTex[i]->SetToContext();
 		pModel->RenderMesh(i);
 	}
 }

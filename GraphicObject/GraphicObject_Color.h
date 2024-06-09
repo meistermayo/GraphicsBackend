@@ -14,23 +14,24 @@ class GraphicObject_Color : public GraphicObject_Base
 friend class ShaderColor;
 
 public:
-	GraphicObject_Color(const GraphicObject_Color&) = delete;				 // Copy constructor
-	GraphicObject_Color(GraphicObject_Color&&) = default;                    // Move constructor
-	GraphicObject_Color& operator=(const GraphicObject_Color&) & = default;  // Copy assignment operator
-	GraphicObject_Color& operator=(GraphicObject_Color&&) & = default;       // Move assignment operator
-	~GraphicObject_Color();		  											 // Destructor
-
 	GraphicObject_Color() = delete;
+	~GraphicObject_Color();
 
-	void SetColor(const Vect& inColor) { Color = inColor; }
+	GraphicObject_Color(Model* inModel, ShaderColor* inShader, const Vect& inColor);
+
+	GraphicObject_Color(const GraphicObject_Color&) = delete;
+	GraphicObject_Color(GraphicObject_Color&&) = default;                    
+	GraphicObject_Color& operator=(const GraphicObject_Color&) = default;  
+	GraphicObject_Color& operator=(GraphicObject_Color&&) = default;       
+
+
+	void SetColor(const Vect& inColor) { mColor = inColor; }
 	virtual void Render(Camera* inCamera) override;
 
-	GraphicObject_Color(ShaderColor* shader, int meshCount, Model* mod, const Vect& color);
-	GraphicObject_Color(Model* mod, ShaderBase* shader, const Vect& color);
 
 private:
-	ShaderColor*				pShader;
-	Vect							Color;
+	ShaderColor* pShader;
+	Vect mColor;
 };
 
 #endif _GraphicObject_Color

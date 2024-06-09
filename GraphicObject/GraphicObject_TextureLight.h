@@ -5,34 +5,33 @@
 
 #include "GraphicObject_Base.h"
 #include "../Math/Vect.h"
-#include "../Texture/Texture.h"
-#include "../Shader/ShaderColorLightTexture.h"
+
+class ShaderColorLightTexture;
 
 class GraphicObject_TextureLight : public GraphicObject_Base
 {
 	friend class Texture;
-	//friend class ShaderTexture;
 
 public:
+	GraphicObject_TextureLight() = delete;
+	~GraphicObject_TextureLight();
+
+	GraphicObject_TextureLight(ShaderColorLightTexture* inShader, Model* inModel);
+	GraphicObject_TextureLight(Model* inModel, ShaderColorLightTexture* inShader, Texture* inTexture, const Vect& inAmb, const Vect& inDif);
+
 	GraphicObject_TextureLight(const GraphicObject_TextureLight&) = delete;
 	GraphicObject_TextureLight(GraphicObject_TextureLight&&) = default;
 	GraphicObject_TextureLight& operator=(const GraphicObject_TextureLight&)& = default;
 	GraphicObject_TextureLight& operator = (GraphicObject_TextureLight&&) & = default;
-	~GraphicObject_TextureLight();
 
-	GraphicObject_TextureLight() = delete;
-
-	void SetTexture(Texture* _tex, int i);
+	void SetTexture(Texture* inTex, int i);
 	virtual void Render(Camera* inCamera) override;
 
-	GraphicObject_TextureLight(ShaderColorLightTexture* shader, Model* mod);
-	GraphicObject_TextureLight(Model* mod, ShaderBase* shader, Texture* inTexture, const Vect& inAmb, const Vect& inDif);
-
 private:
-	Texture ** tex;
+	Texture ** pTex;
 	ShaderColorLightTexture* pShader;
-	Vect ambColor;
-	Vect difColor;
+	Vect mAmbColor;
+	Vect mDifColor;
 };
 
 #endif _GraphicObject_Texture

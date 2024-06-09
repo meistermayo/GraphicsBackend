@@ -3,42 +3,39 @@
 #include "../Camera.h"
 #include <assert.h>
 
-GraphicObject_Texture::GraphicObject_Texture(ShaderTexture* shader,Model* mod)
+GraphicObject_Texture::GraphicObject_Texture(Model* inModel, ShaderTexture* inShader)
 {
-	pShader = shader;
-	SetModel(mod);
-	tex = new Texture*[mod->GetMeshCount()];
-	pWorld = new Matrix(Matrix::Identity);
+	pModel = inModel;
+	pShader = inShader;
+	pTex = new Texture*[pModel->GetMeshCount()];
+	mWorld = Matrix::Identity;
 }
 
-GraphicObject_Texture::GraphicObject_Texture(Model* mod, ShaderTexture* shader, Texture* texture)
+GraphicObject_Texture::GraphicObject_Texture(Model* inModel, ShaderTexture* inShader, Texture* inTexture)
+	: GraphicObject_Texture(inModel, inShader)
 {
-	pShader = shader;
-	SetModel(mod);
-	tex = new Texture * [mod->GetMeshCount()];
-	tex[0] = texture;
-	pWorld = new Matrix(Matrix::Identity);
+	pTex[0] = inTexture;
 }
 
 GraphicObject_Texture::~GraphicObject_Texture() {
-	delete tex;
+	delete[] pTex;
 }
 
 void GraphicObject_Texture::SetTexture(Texture* _tex, int i)
 {
 	assert(pModel->ValidMeshNum(i));
-	this->tex[i] = _tex;
+	this->pTex[i] = _tex;
 }
 
 void GraphicObject_Texture::Render(Camera* inCamera)
 {
 	pModel->BindVertexIndexBuffers();
+	pShader->SetToContext();
+	pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
+	pShader->SendWorld(mWorld);
 	for (int i = 0; i < pModel->GetMeshCount(); i++)
 	{
-		tex[i]->SetToContext();
-		pShader->SetToContext();
-		pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
-		pShader->SendWorld(*pWorld);
+		pTex[i]->SetToContext();
 		pModel->RenderMesh(i);
 	}
 }

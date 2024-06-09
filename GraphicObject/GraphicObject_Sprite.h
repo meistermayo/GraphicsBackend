@@ -6,27 +6,23 @@
 #include "../Texture/Image.h"
 
 class Camera;
-class ShaderBase;
+class ShaderTexture;
 
 class GraphicObject_Sprite : public GraphicObject_Base
 {
 public:
-	GraphicObject_Sprite(Model* model, ShaderBase* pShaderObj, Image* image, Rect* rect);
+	GraphicObject_Sprite() = delete;
 	~GraphicObject_Sprite();
 
-//protected:
-	// Rendermaterial contract
-	// virtual void privSetState() override;
-	// virtual void privSetDataGPU(Camera* pCam) override;
-	// virtual void privDraw() override;
-	// virtual void privRestoreState() override;
+	GraphicObject_Sprite(Model* inModel, ShaderTexture* inShader, Image* inImage, Rect* inRect);
+
+	GraphicObject_Sprite(const GraphicObject_Sprite&) = delete;
+	GraphicObject_Sprite(GraphicObject_Sprite&&) = default;
+	GraphicObject_Sprite& operator=(const GraphicObject_Sprite&) = default;
+	GraphicObject_Sprite& operator=(GraphicObject_Sprite&&) = default;
 
 	virtual void Render(Camera* inCamera) override;
 
-public:
-	// data:  place uniform instancing here
-
-	//GLuint textureID;
 	Image* pImage;
 
 	float origWidth = 0.0f;
@@ -36,11 +32,8 @@ public:
 	float origPosY = 0.0f;
 
 private:
-	// Matrix* pMatrix_uv;
-	// Matrix* pMatrix_orig;
-
 	Model* pModel;
-	ShaderBase* pShader;
+	ShaderTexture* pShader;
 };
 
 #endif

@@ -1,5 +1,4 @@
 #pragma once
-#pragma warning(disable : 4201)
 
 #include "../Align16.h"
 #include "./Vect.h"
@@ -8,6 +7,8 @@
 #include <xmmintrin.h>
 #include <smmintrin.h> 
 #include <cassert>
+
+#pragma warning(disable : 4201)
 
 class Quat;
 

@@ -19,15 +19,7 @@ Skybox::Skybox(ShaderTexture* pShader, Texture* pTexture )
 
 Skybox::~Skybox()
 {
-	delete[] pStdVerts;
-	delete[] pTriList;
 	delete pModel;
-
-	delete mTexture;
-	delete mShader;
-
-	//ReleaseAndDeleteCOMobject(mpVertexBuffer);
-	//ReleaseAndDeleteCOMobject(mpIndexBuffer);
 }
 
 void Skybox::CreateSkybox(StandardVertex *&pVerts, int& nverts, TriangleByIndex *&_pTriList, int& ntri)

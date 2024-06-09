@@ -1,30 +1,19 @@
+#include <assert.h>
+
 #include "GraphicObject_Wireframe.h"
+#include "../Camera.h"
 #include "../Model/Model.h"
 #include "../Shader/ShaderWireframe.h"
-#include <assert.h>
-#include "../Camera.h"
 
-GraphicObject_Wireframe::GraphicObject_Wireframe(ShaderWireframe* shader, int meshCount, Model* mod, const Vect& color)
+GraphicObject_Wireframe::GraphicObject_Wireframe(Model* inModel, ShaderWireframe* inShader, const Vect& inColor)
 {
-	meshCount; // unreferenced fopr now
+	pModel = inModel;
+	pShader = inShader;
 
-	SetModel(mod);
-	pShader = (ShaderWireframe*)shader;
-
-	Color = color;
-	pWorld = new Matrix(Matrix::Identity);
+	mColor = inColor;
+	mWorld = Matrix::Identity;
 }
 
-GraphicObject_Wireframe::GraphicObject_Wireframe(Model* mod, ShaderBase* shader, Vect& color)
-{
-	SetModel(mod);
-	pShader = (ShaderWireframe*)shader;
-
-	Color = color;
-	pWorld = new Matrix(Matrix::Identity);
-}
-
-// NOTE can prob get rid of ptrs to lights...
 GraphicObject_Wireframe::~GraphicObject_Wireframe()
 {
 
@@ -32,13 +21,12 @@ GraphicObject_Wireframe::~GraphicObject_Wireframe()
 
 void GraphicObject_Wireframe::Render(Camera* inCamera)
 {
-	//pShader->SendWorldAndMaterial(World,material->Ambient,material->Diffuse,material->Specular); 
 	pModel->BindVertexIndexBuffers();
+	pShader->SendWorldColor(mWorld, mColor);
+	pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
+	pShader->SetToContext();
 	for (int i = 0; i < pModel->GetMeshCount(); i++)
 	{
-		pShader->SendWorldColor(*pWorld, Color);
-		pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
-		pShader->SetToContext();
 		pModel->RenderMesh(i);
 	}
 }

@@ -10,11 +10,11 @@ struct TextureSampler;
 class Texture
 {
 public:
-	Texture(const Texture&) = default;				 // Copy constructor
-	Texture(Texture&&) = delete;                    // Move constructor
-	Texture& operator=(const Texture&) & = delete;  // Copy assignment operator
-	Texture& operator=(Texture&&) & = delete;       // Move assignment operator
-	~Texture();									     // Destructor
+	Texture(const Texture&) = default;				
+	Texture(Texture&&) = delete;                  
+	Texture& operator=(const Texture&) & = delete;
+	Texture& operator=(Texture&&) & = delete;     
+	~Texture();									  
 	Texture() = delete;
 
 	Texture(std::string filepath);

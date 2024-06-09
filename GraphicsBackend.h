@@ -298,6 +298,7 @@ class D3D_GraphicsBackend : public GraphicsBackend_Base
 	MSG msg = { 0 };
 
 public:
+	D3D_GraphicsBackend() {}
 	void SetData(HINSTANCE hInstance, int inCmdShow);
 	HWND GetWindowHandle() { return hWnd; }
 
@@ -451,12 +452,12 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 		{
 			PostQuitMessage(0);
 			return 0;
-		}
-		pBackend->OnKey(static_cast<KEY_CODE>(wParam), true);
+		} // somethings wrong with these
+		//pBackend->OnKey(static_cast<KEY_CODE>(wParam), true);
 		break;
 
 	case WM_KEYUP:
-		pBackend->OnKey(static_cast<KEY_CODE>(wParam), false);
+		// pBackend->OnKey(static_cast<KEY_CODE>(wParam), false);
 		break;
 
 	case WM_PAINT:
