@@ -1,4 +1,4 @@
-#include "GraphicObject_Sprite.h"
+#include "GraphicsObject_Sprite.h"
 
 #include "../Camera.h"
 #include "../Math/Matrix.h"
@@ -6,7 +6,7 @@
 #include "../Shader/ShaderTexture.h"
 #include "../Texture/Image.h"
 
-GraphicObject_Sprite::GraphicObject_Sprite(Model* inModel, ShaderTexture* inShader, Image* inImage, Rect* inRect)
+GraphicsObject_Sprite::GraphicsObject_Sprite(Model* inModel, ShaderTexture* inShader, Image* inImage, Rect* inRect)
 {
 	pModel = inModel;
 	pShader = inShader;
@@ -20,11 +20,11 @@ GraphicObject_Sprite::GraphicObject_Sprite(Model* inModel, ShaderTexture* inShad
 	mWorld = Matrix::Identity;
 }
 
-GraphicObject_Sprite::~GraphicObject_Sprite()
+GraphicsObject_Sprite::~GraphicsObject_Sprite()
 {
 }
 
-void GraphicObject_Sprite::Render(Camera* inCamera)
+void GraphicsObject_Sprite::Render(Camera* inCamera)
 {
 	pModel->BindVertexIndexBuffers();
 	pShader->SendWorld(mWorld);

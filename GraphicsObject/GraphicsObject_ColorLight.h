@@ -1,27 +1,27 @@
-#ifndef _GraphicObject_Color
-#define _GraphicObject_Color
+#ifndef _GraphicsObject_Color
+#define _GraphicsObject_Color
 
-#include "GraphicObject_Base.h"
+#include "GraphicsObject_Base.h"
 #include "../Shader/ShaderColor.h"
 #include "../Shader/ShaderColorLight.h"
 
 class Vect;
 
-class GraphicObject_ColorLight : public GraphicObject_Base
+class GraphicsObject_ColorLight : public GraphicsObject_Base
 {
 friend class ShaderColor;
 friend class ShaderColorLight;
 
 public:
-	GraphicObject_ColorLight() = delete;
-	~GraphicObject_ColorLight();
+	GraphicsObject_ColorLight() = delete;
+	~GraphicsObject_ColorLight();
 
-	GraphicObject_ColorLight(Model* inMod, ShaderColorLight* inShader, const Vect& inAmb, const Vect& inDif, const Vect& inSp);
+	GraphicsObject_ColorLight(Model* inMod, ShaderColorLight* inShader, const Vect& inAmb, const Vect& inDif, const Vect& inSp);
 
-	GraphicObject_ColorLight(const GraphicObject_ColorLight&) = delete;					
-	GraphicObject_ColorLight(GraphicObject_ColorLight&&) = default;                   
-	GraphicObject_ColorLight& operator=(const GraphicObject_ColorLight&) = default; 
-	GraphicObject_ColorLight& operator=(GraphicObject_ColorLight&&) = default;      
+	GraphicsObject_ColorLight(const GraphicsObject_ColorLight&) = delete;					
+	GraphicsObject_ColorLight(GraphicsObject_ColorLight&&) = default;                   
+	GraphicsObject_ColorLight& operator=(const GraphicsObject_ColorLight&) = default; 
+	GraphicsObject_ColorLight& operator=(GraphicsObject_ColorLight&&) = default;      
 
 	void SetColor(const Vect& col, int meshNum);
 	virtual void Render(Camera* inCamera) override;
@@ -46,4 +46,4 @@ private:
 	ShaderColorLight::Material* material;
 };
 
-#endif _GraphicObject_Color
+#endif _GraphicsObject_Color

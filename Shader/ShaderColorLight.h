@@ -12,7 +12,7 @@ struct GenericBufferObject;
 
 class ShaderColorLight : public ShaderBase
 {
-	friend class GraphicObject_ColorLight;
+	friend class GraphicsObject_ColorLight;
 public:
 	ShaderColorLight(const ShaderColorLight&) = delete;				 // Copy constructor
 	ShaderColorLight(ShaderColorLight&&) = default;                    // Move constructor

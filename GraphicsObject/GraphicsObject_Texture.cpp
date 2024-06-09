@@ -1,9 +1,9 @@
-#include "GraphicObject_Texture.h"
+#include "GraphicsObject_Texture.h"
 #include "../Model/Model.h"
 #include "../Camera.h"
 #include <assert.h>
 
-GraphicObject_Texture::GraphicObject_Texture(Model* inModel, ShaderTexture* inShader)
+GraphicsObject_Texture::GraphicsObject_Texture(Model* inModel, ShaderTexture* inShader)
 {
 	pModel = inModel;
 	pShader = inShader;
@@ -11,23 +11,23 @@ GraphicObject_Texture::GraphicObject_Texture(Model* inModel, ShaderTexture* inSh
 	mWorld = Matrix::Identity;
 }
 
-GraphicObject_Texture::GraphicObject_Texture(Model* inModel, ShaderTexture* inShader, Texture* inTexture)
-	: GraphicObject_Texture(inModel, inShader)
+GraphicsObject_Texture::GraphicsObject_Texture(Model* inModel, ShaderTexture* inShader, Texture* inTexture)
+	: GraphicsObject_Texture(inModel, inShader)
 {
 	pTex[0] = inTexture;
 }
 
-GraphicObject_Texture::~GraphicObject_Texture() {
+GraphicsObject_Texture::~GraphicsObject_Texture() {
 	delete[] pTex;
 }
 
-void GraphicObject_Texture::SetTexture(Texture* _tex, int i)
+void GraphicsObject_Texture::SetTexture(Texture* _tex, int i)
 {
 	assert(pModel->ValidMeshNum(i));
 	this->pTex[i] = _tex;
 }
 
-void GraphicObject_Texture::Render(Camera* inCamera)
+void GraphicsObject_Texture::Render(Camera* inCamera)
 {
 	pModel->BindVertexIndexBuffers();
 	pShader->SetToContext();

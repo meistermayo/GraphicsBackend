@@ -1,11 +1,11 @@
 #include <assert.h>
 
-#include "GraphicObject_Wireframe.h"
+#include "GraphicsObject_Wireframe.h"
 #include "../Camera.h"
 #include "../Model/Model.h"
 #include "../Shader/ShaderWireframe.h"
 
-GraphicObject_Wireframe::GraphicObject_Wireframe(Model* inModel, ShaderWireframe* inShader, const Vect& inColor)
+GraphicsObject_Wireframe::GraphicsObject_Wireframe(Model* inModel, ShaderWireframe* inShader, const Vect& inColor)
 {
 	pModel = inModel;
 	pShader = inShader;
@@ -14,12 +14,12 @@ GraphicObject_Wireframe::GraphicObject_Wireframe(Model* inModel, ShaderWireframe
 	mWorld = Matrix::Identity;
 }
 
-GraphicObject_Wireframe::~GraphicObject_Wireframe()
+GraphicsObject_Wireframe::~GraphicsObject_Wireframe()
 {
 
 }
 
-void GraphicObject_Wireframe::Render(Camera* inCamera)
+void GraphicsObject_Wireframe::Render(Camera* inCamera)
 {
 	pModel->BindVertexIndexBuffers();
 	pShader->SendWorldColor(mWorld, mColor);

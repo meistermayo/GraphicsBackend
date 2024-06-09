@@ -1,11 +1,11 @@
-#include "GraphicObject_ColorLight.h"
+#include "GraphicsObject_ColorLight.h"
 #include "../Camera.h"
 #include "../Model/Model.h"
 #include "../Math/Vect.h"
 #include "../Shader/ShaderColor.h"
 #include <assert.h>
 
-GraphicObject_ColorLight::GraphicObject_ColorLight(Model* inModel, ShaderColorLight* inShader, const Vect &inAmb, const Vect &inDif, const Vect& inSp)
+GraphicsObject_ColorLight::GraphicsObject_ColorLight(Model* inModel, ShaderColorLight* inShader, const Vect &inAmb, const Vect &inDif, const Vect& inSp)
 {
 	pModel = inModel;
 	pShader = inShader;
@@ -25,18 +25,18 @@ GraphicObject_ColorLight::GraphicObject_ColorLight(Model* inModel, ShaderColorLi
 	mWorld = Matrix::Identity;
 }
 
-GraphicObject_ColorLight::~GraphicObject_ColorLight()
+GraphicsObject_ColorLight::~GraphicsObject_ColorLight()
 {
 
 }
 
-void GraphicObject_ColorLight::SetColor(const Vect& inCol, int inMeshNum) 
+void GraphicsObject_ColorLight::SetColor(const Vect& inCol, int inMeshNum) 
 {
 	assert(pModel->ValidMeshNum(inMeshNum));
 	pColor[inMeshNum] = inCol;
 }
 
-void GraphicObject_ColorLight::Render(Camera* inCamera)
+void GraphicsObject_ColorLight::Render(Camera* inCamera)
 {
 	pModel->BindVertexIndexBuffers();
 	pShader->SendWorldAndMaterial(mWorld, material->Ambient, material->Diffuse, material->Specular);
@@ -49,14 +49,14 @@ void GraphicObject_ColorLight::Render(Camera* inCamera)
 	}
 }
 
-void GraphicObject_ColorLight::SetLights(ShaderColorLight::DirectionalLight* inDirLight, ShaderColorLight::SpotLight* inSptLight, ShaderColorLight::PointLight* inPntLight)
+void GraphicsObject_ColorLight::SetLights(ShaderColorLight::DirectionalLight* inDirLight, ShaderColorLight::SpotLight* inSptLight, ShaderColorLight::PointLight* inPntLight)
 {
 	this->dirLight = inDirLight;
 	this->sptLight = inSptLight;
 	this->pntLight = inPntLight;
 }
 
-void GraphicObject_ColorLight::SetDirectionalLightParameters(const Vect& inDir, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
+void GraphicsObject_ColorLight::SetDirectionalLightParameters(const Vect& inDir, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
 {
 	pShader->SetDirectionalLightParameters(inDir, inAmb, inDif, inSp);
 	dirLight->Direction = inDir;
@@ -65,7 +65,7 @@ void GraphicObject_ColorLight::SetDirectionalLightParameters(const Vect& inDir, 
 	dirLight->Light.Specular = inSp;
 }
 
-void GraphicObject_ColorLight::SetPointLightParameters1(const Vect& inPos, float inR, const Vect& inAtt, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
+void GraphicsObject_ColorLight::SetPointLightParameters1(const Vect& inPos, float inR, const Vect& inAtt, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
 {
 	pShader->SetPointLightParameters1(inPos, inR, inAtt, inAmb, inDif, inSp);
 	pntLight->Attenuation = inAtt;
@@ -74,7 +74,7 @@ void GraphicObject_ColorLight::SetPointLightParameters1(const Vect& inPos, float
 	pntLight->Light.Specular = inSp;
 }
 
-void GraphicObject_ColorLight::SetPointLightParameters2(const Vect& inPos, float inR, const Vect& inAtt, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
+void GraphicsObject_ColorLight::SetPointLightParameters2(const Vect& inPos, float inR, const Vect& inAtt, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
 {
 	pShader->SetPointLightParameters2(inPos, inR, inAtt, inAmb, inDif, inSp);
 	pntLight->Attenuation = inAtt;
@@ -83,7 +83,7 @@ void GraphicObject_ColorLight::SetPointLightParameters2(const Vect& inPos, float
 	pntLight->Light.Specular = inSp;
 }
 
-void GraphicObject_ColorLight::SetPointLightParameters3(const Vect& inPos, float inR, const Vect& inAtt, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
+void GraphicsObject_ColorLight::SetPointLightParameters3(const Vect& inPos, float inR, const Vect& inAtt, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
 {
 	pShader->SetPointLightParameters3(inPos, inR, inAtt, inAmb, inDif, inSp);
 	pntLight->Attenuation = inAtt;
@@ -92,7 +92,7 @@ void GraphicObject_ColorLight::SetPointLightParameters3(const Vect& inPos, float
 	pntLight->Light.Specular = inSp;
 }
 
-void GraphicObject_ColorLight::SetSpotLightParameters(const Vect& inPos, float inR, const Vect& inAtt, const Vect& inDir, float inSpotExp, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
+void GraphicsObject_ColorLight::SetSpotLightParameters(const Vect& inPos, float inR, const Vect& inAtt, const Vect& inDir, float inSpotExp, const Vect& inAmb, const Vect& inDif, const Vect& inSp)
 {
 	pShader->SetSpotLightParameters(inPos, inR, inAtt, inDir, inSpotExp, inAmb, inDif, inSp);
 	sptLight->Attenuation = inAtt;
@@ -101,7 +101,7 @@ void GraphicObject_ColorLight::SetSpotLightParameters(const Vect& inPos, float i
 	sptLight->Light.Specular = inSp;
 }
 
-void GraphicObject_ColorLight::SetMaterial(ShaderColorLight::Material* inMaterial)
+void GraphicsObject_ColorLight::SetMaterial(ShaderColorLight::Material* inMaterial)
 {
 	this->material = inMaterial;
 }

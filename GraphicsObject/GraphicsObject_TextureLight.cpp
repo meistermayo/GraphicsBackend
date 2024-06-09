@@ -1,13 +1,13 @@
 #include <assert.h>
 
-#include "GraphicObject_TextureLight.h"
+#include "GraphicsObject_TextureLight.h"
 #include "../Camera.h"
 #include "../Model/Model.h"
 #include "../Shader/ShaderColorLightTexture.h"
 #include "../Texture/Texture.h"
 
 
-GraphicObject_TextureLight::GraphicObject_TextureLight(ShaderColorLightTexture* inShader, Model* inModel)
+GraphicsObject_TextureLight::GraphicsObject_TextureLight(ShaderColorLightTexture* inShader, Model* inModel)
 {
 	mAmbColor = Vect::One;
 	mDifColor = Vect::One;
@@ -17,7 +17,7 @@ GraphicObject_TextureLight::GraphicObject_TextureLight(ShaderColorLightTexture* 
 	mWorld = Matrix::Identity;
 }
 
-GraphicObject_TextureLight::GraphicObject_TextureLight(Model* inModel, ShaderColorLightTexture* inShader, Texture* inTexture, const Vect& inAmb, const Vect& inDif)
+GraphicsObject_TextureLight::GraphicsObject_TextureLight(Model* inModel, ShaderColorLightTexture* inShader, Texture* inTexture, const Vect& inAmb, const Vect& inDif)
 {
 	mAmbColor = inAmb;
 	mDifColor = inDif;
@@ -28,17 +28,17 @@ GraphicObject_TextureLight::GraphicObject_TextureLight(Model* inModel, ShaderCol
 	mWorld = Matrix::Identity;
 }
 
-GraphicObject_TextureLight::~GraphicObject_TextureLight() {
+GraphicsObject_TextureLight::~GraphicsObject_TextureLight() {
 	delete[] pTex;
 }
 
-void GraphicObject_TextureLight::SetTexture(Texture* inTex, int i)
+void GraphicsObject_TextureLight::SetTexture(Texture* inTex, int i)
 {
 	assert(pModel->ValidMeshNum(i));
 	this->pTex[i] = inTex;
 }
 
-void GraphicObject_TextureLight::Render(Camera* inCamera)
+void GraphicsObject_TextureLight::Render(Camera* inCamera)
 {
 	pModel->BindVertexIndexBuffers();
 	pShader->SendWorldAndMaterial(mWorld, mAmbColor, mDifColor, Vect::One);
