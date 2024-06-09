@@ -21,24 +21,19 @@ void Camera::setViewport(int inX, int inY, int inWidth, int inHeight)
 
 	this->aspectRatio = height / width;
 }
-
+// redundant? todo
 void Camera::setOrthographic(float left, float right, float top, float bottom, float near, float far)
 {
+	left; right; top; bottom;
+
+	this->nearDist = near;
+	this->farDist = far;
+
 	bIsPerspective = false;
-	setPerspective(this->fovy, (right-left)/(bottom-top), near, far); // todo : check me
 }
 
 void Camera::setOrientAndPosition(const Vect &inUp, const Vect &inLookAt, const Vect &inPos)
 {
-	Vect a(1, 1, 1, 1);
-	Vect b(1, 1, 1, 1);
-	Vect c(1, 1, 1, 0.5f);
-	Vect d(1, 1, 1, 0.5f);
-
-	Vect ab = a - b;
-	Vect bc = b - c;
-	Vect cd = c - d;
-	Vect da = d - a;
 	// Remember the up, dir and right are unit length, and are perpendicular.
 	// Treat lookAt as king, find Right vect, then correct Up to insure perpendiculare.
 	// Make sure that all vectors are unit vectors.
@@ -120,11 +115,11 @@ void Camera::privUpdateProjectionMatrix(void)
 		this->projMatrix[8] = 0.0f;
 		this->projMatrix[9] = 0.0f;
 		this->projMatrix[10] = -2.0f / (this->farDist - this->nearDist);
-		this->projMatrix[11] = -1.0f;
+		this->projMatrix[11] = 0.0f;
 
 		this->projMatrix[12] = -1.0f;
-		this->projMatrix[13] = 1.0f;
-		this->projMatrix[14] = (-1.0f * this->farDist * this->nearDist) / (this->farDist - this->nearDist);
+		this->projMatrix[13] = -1.0f;
+		this->projMatrix[14] = -1.0f * (this->farDist + this->nearDist) / (this->farDist - this->nearDist);
 		this->projMatrix[15] = 1.0f;
 	}
 	//*/

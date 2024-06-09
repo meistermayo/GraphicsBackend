@@ -57,12 +57,12 @@ void ModelTools::CreateUnitPlaneXY(StandardVertex*& pVerts, int& nverts, Triangl
 	ntri = 2;
 	pTriList = new TriangleByIndex[ntri];
 
-	pVerts[0].set(-0.5f, -0.5f, -0.0f,	-0.5f, -0.5f,	Colors::Red);
-	pVerts[1].set(0.5f, -0.5f, -0.0f,	0.5f, -0.5f,	Colors::Green);
-	pVerts[2].set(-0.5f, 0.5f, -0.0f,	-0.5f, 0.5f,	Colors::Blue);
-	pVerts[3].set(0.5f, 0.5f, -0.0f,	0.5f, 0.5f,		Colors::White);
+	pVerts[0].set(-0.5f, -0.5f, -0.0f,	0.0f, 0.0f,	Colors::Red);
+	pVerts[1].set(0.5f, -0.5f, -0.0f,	1.0f, 0.0f,	Colors::Green);
+	pVerts[2].set(-0.5f, 0.5f, -0.0f,	0.0f, 1.0f,	Colors::Blue);
+	pVerts[3].set(0.5f, 0.5f, -0.0f,	1.0f, 1.0f,	Colors::White);
 
-	pTriList[0].set(2, 1, 0);
+	pTriList[0].set(3, 1, 0);
 	pTriList[1].set(0, 2, 3);
 }
 
@@ -73,10 +73,10 @@ void ModelTools::CreateUnitPlaneXZ(StandardVertex*& pVerts, int& nverts, Triangl
 	ntri = 2;
 	pTriList = new TriangleByIndex[ntri];
 
-	pVerts[0].set(-0.5f, -0.0f,	-0.5f,		-0.5f, -0.5f,	Colors::Red);
-	pVerts[1].set(0.5f,	 -0.0f,	-0.5f,		0.5f, -0.5f,	Colors::Green);
-	pVerts[2].set(-0.5f,-0.0f,	0.5f,		-0.5f, 0.5f,	Colors::Blue);
-	pVerts[3].set(0.5f,	-0.0f,	0.5f,		0.5f, 0.5f,		 Colors::White);
+	pVerts[0].set(-0.5f, -0.0f,	-0.5f,		0.0f, 0.0f,	Colors::Red);
+	pVerts[1].set(0.5f,	 -0.0f,	-0.5f,		1.0f, 0.0f,	Colors::Green);
+	pVerts[2].set(-0.5f,-0.0f,	0.5f,		0.0f, 1.0f,	Colors::Blue);
+	pVerts[3].set(0.5f,	-0.0f,	0.5f,		1.0f, 1.0f,	 Colors::White);
 
 	pTriList[0].set(3, 1, 0);
 	pTriList[1].set(0, 2, 3);

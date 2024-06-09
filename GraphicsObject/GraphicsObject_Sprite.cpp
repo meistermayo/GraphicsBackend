@@ -27,6 +27,7 @@ GraphicsObject_Sprite::~GraphicsObject_Sprite()
 void GraphicsObject_Sprite::Render(Camera* inCamera)
 {
 	pModel->BindVertexIndexBuffers();
+	pImage->pText->SetToContext();
 	pShader->SendWorld(mWorld);
 	pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
 	pShader->SetToContext();
