@@ -108,7 +108,7 @@ protected:
 	IndexBufferObject*		mpIndexBufferObject;
 
 	void privLoadDataToGPU();
-	void privLoadDataFromFile(const char * const _modelName, StandardVertex*& pVerts, int& nverts, TriangleByIndex*& ptlist, int& ntri, bool flipU, bool flipV, float scale);
+	void privLoadDataFromFile(const char * const inModelName, StandardVertex*& outVerts, int& outVertCount, TriangleByIndex*& outTriList, int& outTriCount, bool inFlipU, bool inFlipV, float inScale);
 	void privPopulateHelperData();
 
 public:
@@ -132,20 +132,20 @@ protected:
 	: pStdVerts(nullptr), pTriList(nullptr), pVectList(nullptr) {}
 
 public:
-	Model(StandardVertex *pVerts, int nverts, TriangleByIndex *ptlist, int ntri);
-	Model(PreMadeModels pm, float scale = 1);
-	Model(const char * const _modelName, bool flipU = false, bool flipV = false, float scale = 1);
-	Model(FbxMeshInfo& fbxMeshInfo);
+	Model(StandardVertex *inVerts, int inVertCount, TriangleByIndex *inTriList, int inTriCount);
+	Model(PreMadeModels inPm, float inScale = 1);
+	Model(const char * const inModelName, bool inFlipU = false, bool inFlipV = false, float inScale = 1);
+	Model(FbxMeshInfo& inFbxMeshInfo);
 
 	virtual ~Model();
 
 	void BindVertexIndexBuffers();
 	void Render();
-	void RenderMesh(int meshnum);
+	void RenderMesh(int inMeshNum);
 
 	// Get access
 	int GetMeshCount();
-	bool ValidMeshNum(int i);
+	bool ValidMeshNum(int inMeshNum);
 
 	Vect GetCenter() const { return Vect(1, 1, 1); }
 	float GetRadius() const { return 10.0f; } // TODO

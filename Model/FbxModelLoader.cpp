@@ -12,7 +12,7 @@ FbxModelLoader::FbxModelLoader()
 
 }
 
-FbxModelInfo FbxModelLoader::GetModel(const char* fileName)
+FbxModelInfo FbxModelLoader::GetModel(const char* inFileName)
 {
 	FbxManager* pManager = FbxManager::Create();
 	FbxModelInfo fbxModelInfo = FbxModelInfo();
@@ -22,14 +22,13 @@ FbxModelInfo FbxModelLoader::GetModel(const char* fileName)
 
 	FbxImporter* pImporter = FbxImporter::Create(pManager, "");
 
-	if (!pImporter->Initialize(fileName, -1, pManager->GetIOSettings()))
+	if (!pImporter->Initialize(inFileName, -1, pManager->GetIOSettings()))
 	{
 		assert(false);
 	}
 	else
 	{
-		// ???
-		FbxScene * pScene = FbxScene::Create(pManager, "uhhh");
+		FbxScene * pScene = FbxScene::Create(pManager, "");
 
 		pImporter->Import(pScene);
 		pImporter->Destroy();
@@ -109,7 +108,7 @@ FbxModelInfo FbxModelLoader::GetModel(const char* fileName)
 					meshInfo.pTris = new TriangleByIndex[mesh->GetPolygonCount()];
 					for (int i = 0; i < mesh->GetPolygonCount(); i++)
 					{
-						meshInfo.pTris[i].set (i*3, i*3 + 1, i*3 + 2);
+						meshInfo.pTris[i].set(i*3, i*3 + 1, i*3 + 2);
 					}
 
 					fbxModelInfo.meshInfo.push_back(meshInfo);
@@ -124,22 +123,19 @@ FbxModelInfo FbxModelLoader::GetModel(const char* fileName)
 
 StandardVertex * FbxModelLoader::GetVertices(FbxMesh * pMesh)
 {
-	// int count = pMesh->GetUVLayerCount();
-
 	pMesh->GenerateNormals(true, true);
-	int controlPointsCount = pMesh->GetControlPointsCount();// "points... "
-	int polygonVertexCount = pMesh->GetPolygonVertexCount(); // but not vertices.... danmb...
+
+	int controlPointsCount = pMesh->GetControlPointsCount();
+	int polygonVertexCount = pMesh->GetPolygonVertexCount();
 	int vertexCount = polygonVertexCount > controlPointsCount ? polygonVertexCount : controlPointsCount;
 
 	StandardVertex* verts = new StandardVertex[controlPointsCount];
 
 	FbxGeometryElementNormal* pNormalElement = pMesh->GetElementNormal();
 	FbxGeometryElementUV* pUVElement = pMesh->GetElementUV(0);
-	// int* vertexArray = pMesh->GetPolygonVertices();
 	Vect* normals = new Vect[vertexCount];
 	Vect* uvs = new Vect[vertexCount];
 
-	// how do we know how to loop this?...
 	switch (pNormalElement->GetMappingMode())
 	{
 	case FbxGeometryElement::eByControlPoint:
@@ -265,32 +261,4 @@ T FbxModelLoader::GetLayerElement(FbxLayerElementTemplate<T>* pLayerElement, int
 	}
 
 	return T();
-}
-
-TriangleByIndex * FbxModelLoader::GetTriangles(FbxMesh * pMesh)
-{
-	int polygonCount = pMesh->GetPolygonCount();
-	std::vector<TriangleByIndex*> triVector = std::vector<TriangleByIndex*>();
-
-	for (int i = 0; i < polygonCount; i++)
-	{
-		int indexCount = pMesh->GetPolygonSize(i);
-		assert(indexCount == 3);
-		triVector.push_back(new TriangleByIndex());
-		int tri[3];
-		for (int j=0; j<3; j++)
-		{
-			tri[j] = pMesh->GetPolygonVertex(i, j);
-		}
-
-		triVector[triVector.size() - 1]->set(tri[0], tri[1], tri[2]);
-	}
-	TriangleByIndex* tris = new TriangleByIndex[triVector.size()];
-
-	for (size_t i = 0; i < triVector.size(); i++)
-	{
-		tris[i] = *triVector[i];
-	}
-
-	return tris;
 }

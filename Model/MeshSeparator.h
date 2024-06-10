@@ -31,10 +31,10 @@ public:
 	~MeshSeparator();									 // Destructor
 
 	MeshSeparator() = delete;
-	MeshSeparator(StandardVertex *pVerts, int nverts, TriangleByIndex*& pTriList, int ntri);
+	MeshSeparator(const StandardVertex *inVerts, TriangleByIndex*& inTriList, int inTriCount);
 
 	int GetMeshCount();
-	void GetMeshTriCountAndOffset(int meshnum, int& count, int& offset);
+	void GetMeshTriCountAndOffset(int inMeshNum, int& outCount, int& outOffset);
 
 };
 

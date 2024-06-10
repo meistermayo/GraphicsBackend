@@ -3,7 +3,7 @@
 #include "Model.h"
 
 // Improtant: the tri index list may be modified (reordered!)
-MeshSeparator::MeshSeparator(StandardVertex *pVerts, int nverts, TriangleByIndex*& pTriList, int ntri)
+MeshSeparator::MeshSeparator(const StandardVertex *inVerts, TriangleByIndex*& inTriList, int inTriCount)
 {
 	// create a temporary map to sort the indices
 	using KEY = int;
@@ -11,16 +11,15 @@ MeshSeparator::MeshSeparator(StandardVertex *pVerts, int nverts, TriangleByIndex
 	std::map<KEY, MESHINDICES> meshes;
 
 	// Create the different list of indices for meshes
-	nverts;
-	for (int i = 0; i < ntri; i++)
+	for (int i = 0; i < inTriCount; i++)
 	{
-		TriangleByIndex ind = pTriList[i];
+		TriangleByIndex ind = inTriList[i];
 
 		// triangles in one mesh shouldn't share vertices with another mesh
-		assert((pVerts[ind.v0].meshNum == pVerts[ind.v1].meshNum) && (pVerts[ind.v0].meshNum == pVerts[ind.v2].meshNum));
+		assert((inVerts[ind.v0].meshNum == inVerts[ind.v1].meshNum) && (inVerts[ind.v0].meshNum == inVerts[ind.v2].meshNum));
 
 		// crash 1 todo
-		KEY key = (KEY) pVerts[ind.v0].meshNum;
+		KEY key = (KEY)inVerts[ind.v0].meshNum;
 		meshes[key].push_back(ind);
 	}
 
@@ -28,7 +27,7 @@ MeshSeparator::MeshSeparator(StandardVertex *pVerts, int nverts, TriangleByIndex
 	meshcount = meshes.size();
 
 	// Reconsruct a new tri index list ordered by mesh number
-	TriangleByIndex* templist = new TriangleByIndex[ntri];
+	TriangleByIndex* templist = new TriangleByIndex[inTriCount];
 	meshdata = new MeshIndexData[meshes.size()];
 	int offsetval = 0;
 
@@ -48,8 +47,8 @@ MeshSeparator::MeshSeparator(StandardVertex *pVerts, int nverts, TriangleByIndex
 	}
 
 	// crash 2 todo
-	delete[] pTriList;		// Delete the original triangle array
-	pTriList = templist;	// Replace it with new re-ordered one
+	delete[] inTriList;		// Delete the original triangle array
+	inTriList = templist;	// Replace it with new re-ordered one
 
 }
 
@@ -58,12 +57,12 @@ MeshSeparator::~MeshSeparator()
 	delete[] meshdata;
 }
 
-void MeshSeparator::GetMeshTriCountAndOffset(int meshnum, int& count, int& offset)
+void MeshSeparator::GetMeshTriCountAndOffset(int inMeshNum, int& outCount, int& outOffset)
 {
-	assert((meshnum >= 0) && (meshnum < GetMeshCount()));
+	assert((inMeshNum >= 0) && (inMeshNum < GetMeshCount()));
 
-	count = meshdata[meshnum].numTri;
-	offset = meshdata[meshnum].offset;
+	outCount = meshdata[inMeshNum].numTri;
+	outOffset = meshdata[inMeshNum].offset;
 }
 
 int MeshSeparator::GetMeshCount()

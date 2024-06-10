@@ -8,39 +8,39 @@
 #include "AzulFileHdr.h"
 #include "MeshSeparator.h"
 
-Model::Model(StandardVertex *pVerts, int nverts, TriangleByIndex *ptlist, int ntri)
+Model::Model(StandardVertex *inVerts, int inVertCount, TriangleByIndex *inTriList, int inTriCount)
 {
-	assert(nverts > 0);
-	assert(ntri > 0);
+	assert(inVertCount > 0);
+	assert(inTriCount > 0);
 
 	// Copy Data
-	numVerts = nverts;
+	numVerts = inVertCount;
 	pStdVerts = new StandardVertex[numVerts];
 	for (int i = 0; i < numVerts; i++)
 	{
-		pStdVerts[i] = pVerts[i];
+		pStdVerts[i] = inVerts[i];
 	}
-	numTris = ntri;
+	numTris = inTriCount;
 	pTriList = new TriangleByIndex[numTris];
 	for (int i = 0; i < numTris; i++)
 	{
-		pTriList[i] = ptlist[i];
+		pTriList[i] = inTriList[i];
 	}
 
-	meshes = new MeshSeparator(pStdVerts, numVerts, pTriList, numTris);
+	meshes = new MeshSeparator(pStdVerts, pTriList, numTris);
 	privPopulateHelperData();
 	privLoadDataToGPU();
 }
 
-Model::Model(const char * const _modelName, bool flipU, bool flipV, float scale)
+Model::Model(const char * const inModelName, bool inFlipU, bool inFlipV, float inScale)
 {
 	pStdVerts = nullptr;
 	pTriList = nullptr;
 	numVerts = 0;
 	numTris = 0;
 
-	privLoadDataFromFile(_modelName, pStdVerts, numVerts, pTriList, numTris, flipU, flipV, scale );
-	meshes = new MeshSeparator(pStdVerts, numVerts, pTriList, numTris);
+	privLoadDataFromFile(inModelName, pStdVerts, numVerts, pTriList, numTris, inFlipU, inFlipV, inScale );
+	meshes = new MeshSeparator(pStdVerts, pTriList, numTris);
 	privPopulateHelperData();
 	privLoadDataToGPU();
 }
@@ -53,19 +53,19 @@ Model::Model(FbxMeshInfo& fbxMeshInfo)
 	pStdVerts = fbxMeshInfo.pVertices;
 	pTriList = fbxMeshInfo.pTris;
 	
-	meshes = new MeshSeparator(pStdVerts, numVerts, pTriList, numTris);
+	meshes = new MeshSeparator(pStdVerts, pTriList, numTris);
 	privPopulateHelperData();
 	privLoadDataToGPU();
 }
 
-Model::Model(Model::PreMadeModels pm, float scale)
+Model::Model(Model::PreMadeModels inPm, float inScale)
 {
 	pStdVerts = nullptr;
 	pTriList = nullptr;
 	numVerts = 0;
 	numTris = 0;
 
-	switch (pm)
+	switch (inPm)
 	{
 	case UnitBox:
 		ModelTools::CreateUnitBox(pStdVerts, numVerts, pTriList, numTris);
@@ -77,7 +77,7 @@ Model::Model(Model::PreMadeModels pm, float scale)
 		ModelTools::CreateUnitPyramid(pStdVerts, numVerts, pTriList, numTris);
 		break;
 	case UnitSphere:
-		ModelTools::CreateUnitSphere(12, 12, pStdVerts, numVerts, pTriList, numTris, scale);
+		ModelTools::CreateUnitSphere(12, 12, pStdVerts, numVerts, pTriList, numTris, inScale);
 		break;
 	case UnitPlaneXY:
 		ModelTools::CreateUnitPlaneXY(pStdVerts, numVerts, pTriList, numTris);
@@ -89,7 +89,7 @@ Model::Model(Model::PreMadeModels pm, float scale)
 		assert(false && "Invalid option");
 	}
 
-	meshes = new MeshSeparator(pStdVerts, numVerts, pTriList, numTris);
+	meshes = new MeshSeparator(pStdVerts, pTriList, numTris);
 
 	privPopulateHelperData();
 	privLoadDataToGPU();
@@ -105,13 +105,13 @@ Model::~Model()
 	delete mpIndexBufferObject;
 }
 
-void Model::privLoadDataFromFile(const char * const _modelName, StandardVertex*& pVerts, int& nverts, TriangleByIndex*& ptlist, int& ntri, bool flipU, bool flipV, float scale)
+void Model::privLoadDataFromFile(const char* const inModelName, StandardVertex*& outVerts, int& outVertCount, TriangleByIndex*& outTriList, int& outTriCount, bool inFlipU, bool inFlipV, float inScale)
 {
 	// Read from file
 	FileHandle fh;
 	FileError  ferror;
 
-	ferror = File::open(fh, _modelName, FILE_READ);
+	ferror = File::open(fh, inModelName, FILE_READ);
 	assert(ferror == FILE_SUCCESS);
 
 	// GEt the file format for the data
@@ -172,8 +172,8 @@ void Model::privLoadDataFromFile(const char * const _modelName, StandardVertex*&
 	assert(ferror == FILE_SUCCESS);
 
 	// create the vertex buffer
-	nverts = azulFileHdr.numVerts;
-	VertexStride_VUN* pTmpVerts = new VertexStride_VUN[nverts];
+	outVertCount = azulFileHdr.numVerts;
+	VertexStride_VUN* pTmpVerts = new VertexStride_VUN[outVertCount];
 
 	// load the verts
 	// seek to the location
@@ -181,12 +181,12 @@ void Model::privLoadDataFromFile(const char * const _modelName, StandardVertex*&
 	assert(ferror == FILE_SUCCESS);
 
 	// read it
-	ferror = File::read(fh, pTmpVerts, nverts * sizeof(VertexStride_VUN));
+	ferror = File::read(fh, pTmpVerts, outVertCount * sizeof(VertexStride_VUN));
 	assert(ferror == FILE_SUCCESS);
 
 	// create the triLists buffer
-	ntri = azulFileHdr.numTriangles;
-	ptlist = new TriangleByIndex[ntri];
+	outTriCount = azulFileHdr.numTriangles;
+	pTriList = new TriangleByIndex[outTriCount];
 
 	// load the triList
 	// seek to the location
@@ -194,7 +194,7 @@ void Model::privLoadDataFromFile(const char * const _modelName, StandardVertex*&
 	assert(ferror == FILE_SUCCESS);
 
 	// read it
-	ferror = File::read(fh, ptlist, ntri * sizeof(TriangleByIndex));
+	ferror = File::read(fh, outTriList, outTriCount * sizeof(TriangleByIndex));
 	assert(ferror == FILE_SUCCESS);
 
 	// close
@@ -202,25 +202,22 @@ void Model::privLoadDataFromFile(const char * const _modelName, StandardVertex*&
 	assert(ferror == FILE_SUCCESS);
 
 	// **** Overly complicated detour Part 2: now we copy the vertex data into our StandardVertex
-	pVerts = new StandardVertex[nverts];
+	outVerts = new StandardVertex[outVertCount];
 	StandardVertex* v;
 	VertexStride_VUN* tmp;
-	for (int i = 0; i < nverts; i++)
+	for (int i = 0; i < outVertCount; i++)
 	{
 		tmp = &(pTmpVerts[i]);
-		v = &(pVerts[i]);
+		v = &(outVerts[i]);
 		v->set(tmp->x, tmp->y, tmp->z, tmp->u, tmp->v, tmp->nx, tmp->ny, tmp->nz, tmp->r, tmp->g, tmp->b, (int) tmp->txt);
-		if (flipU)
+		if (inFlipU)
 			v->u = -v->u;
-		if (flipV)
+		if (inFlipV)
 			v->v = -v->v;
-		v->Pos = v->Pos * scale;
+		v->Pos = v->Pos * inScale;
 	}
 
 	delete[] pTmpVerts;
-	
-	// *************************
-
 }
 
 void Model::privPopulateHelperData()
@@ -245,9 +242,9 @@ void  Model::privLoadDataToGPU()
 	mpIndexBufferObject->LoadToGPU();
 }
 
-bool Model::ValidMeshNum(int meshnum)
+bool Model::ValidMeshNum(int inMeshNum)
 {
-	return (meshnum >= 0) && (meshnum < GetMeshCount());
+	return (inMeshNum >= 0) && (inMeshNum < GetMeshCount());
 }
 
 int Model::GetMeshCount()
@@ -268,12 +265,12 @@ void Model::Render()
 	GraphicsBackend::DrawIndexed(numTris * 3, 0, 0);
 }
 
-void Model::RenderMesh(int meshnum)
+void Model::RenderMesh(int inMeshNum)
 {
-	assert(ValidMeshNum(meshnum));
+	assert(ValidMeshNum(inMeshNum));
 
 	int tricount, trioffset;
-	meshes->GetMeshTriCountAndOffset(meshnum, tricount, trioffset);
+	meshes->GetMeshTriCountAndOffset(inMeshNum, tricount, trioffset);
 
 	GraphicsBackend::DrawIndexed(tricount * 3, trioffset * 3, 0);
 }
