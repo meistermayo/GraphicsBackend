@@ -36,8 +36,6 @@ void ShaderTexture::SetToContext()
 	mpBufferCamMatrices->Bind();
 	mpBuffWordColor->Bind();
 	mpFog->Bind();
-
-	// mTex->SetToContext(); // todo
 }
 
 void ShaderTexture::SendCamMatrices(const Matrix& view, const Matrix& proj)

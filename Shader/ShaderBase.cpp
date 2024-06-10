@@ -17,14 +17,8 @@ ShaderBase::~ShaderBase()
 {
 	delete mpShaderInterface;
 }
-/*
-void ShaderBase::CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* layoutdesc, UINT size)
-{
-	mpShaderInterface->CreateInputLayout(layoutdesc, size); // todo - refactor
-}
-*/
-// Sets the DX context to use these VS, PS and input layout
+
 void ShaderBase::SetToContext_VS_PS_InputLayout()
 {
-	mpShaderInterface->SetToContext_VS_PS_InputLayout(); // todo - refactor
+	mpShaderInterface->SetToContext_VS_PS_InputLayout();
 }

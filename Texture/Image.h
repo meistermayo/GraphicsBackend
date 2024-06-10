@@ -4,11 +4,9 @@
 #include "Rect.h"
 #include "Texture.h"
 
-// Implicitly owns the rect... fow now (todo)
 class Image
 {
 public:
-	// public methods: -------------------------------------------------------------
 	Image()
 		: pText(nullptr), pImageRect(nullptr) {}
 
@@ -27,9 +25,9 @@ public:
 	}
 
 public:
-	// data: -----------------------------------------------------------------------
 	Rect* pImageRect;
 	Texture* pText;
+
 };
 
 

@@ -9,11 +9,11 @@ struct GenericBufferObject;
 class ShaderWireframe : public ShaderBase
 {
 public:
-	ShaderWireframe(const ShaderWireframe&) = delete;				 // Copy constructor
-	ShaderWireframe(ShaderWireframe&&) = default;                    // Move constructor
-	ShaderWireframe& operator=(const ShaderWireframe&) & = default;  // Copy assignment operator
-	ShaderWireframe& operator=(ShaderWireframe&&) & = default;       // Move assignment operator
-	~ShaderWireframe();		  							         // Destructor
+	ShaderWireframe(const ShaderWireframe&) = delete;				
+	ShaderWireframe(ShaderWireframe&&) = default;                   
+	ShaderWireframe& operator=(const ShaderWireframe&) & = default; 
+	ShaderWireframe& operator=(ShaderWireframe&&) & = default;      
+	~ShaderWireframe();		  										
 
 	ShaderWireframe(std::string filename);
 	ShaderWireframe() = delete;

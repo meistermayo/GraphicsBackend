@@ -14,7 +14,8 @@ std::wstring stringToWString(std::string inStr)
 	std::wstring wStr;
 	wStr.resize(inStr.size());
 
-	// may have to check this later... seems to return 0 but doesn't fail what I want it to do...
+	// may have to check this later... seems to return 0 which *should* indicate a failure...
+	// but it doesn't fail what I want it to do, which is return a compabitble wchar string...
 	MultiByteToWideChar(CP_ACP, 0, inStr.c_str(), -1, &wStr[0], inStr.size());
 
 	return wStr;

@@ -57,7 +57,6 @@ void ShaderWireframe::SetToContext()
 	mpFog->Bind();
 }
 
-
 void ShaderWireframe::SendFogData(const float& fogMin, const float& fogMax, const Vect& fogCol)
 {
 	FogData fogData;
@@ -67,6 +66,7 @@ void ShaderWireframe::SendFogData(const float& fogMin, const float& fogMax, cons
 	fogData.eyePos = eyepos;
 	mpFog->UpdateBuffer(&fogData);
 }
+
 void ShaderWireframe::GetEyePos(const Vect& _eyepos)
 {
 	this->eyepos = _eyepos;

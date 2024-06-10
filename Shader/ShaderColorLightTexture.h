@@ -13,10 +13,10 @@ struct GenericBufferObject;
 class ShaderColorLightTexture : public ShaderBase
 {
 public:
-	ShaderColorLightTexture(const ShaderColorLightTexture&) = delete;				 // Copy constructor
-	ShaderColorLightTexture(ShaderColorLightTexture&&) = default;                    // Move constructor
-	ShaderColorLightTexture& operator=(const ShaderColorLightTexture&) & = default;  // Copy assignment operator
-	ShaderColorLightTexture& operator=(ShaderColorLightTexture&&) & = default;       // Move assignment operator
+	ShaderColorLightTexture(const ShaderColorLightTexture&) = delete;				 
+	ShaderColorLightTexture(ShaderColorLightTexture&&) = default;                    
+	ShaderColorLightTexture& operator=(const ShaderColorLightTexture&) & = default;  
+	ShaderColorLightTexture& operator=(ShaderColorLightTexture&&) & = default;       
 	~ShaderColorLightTexture();		  				
 	ShaderColorLightTexture() = delete;
 	ShaderColorLightTexture(std::string filename);
