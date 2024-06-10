@@ -58,114 +58,33 @@ void TerrainModel::ConstructTerrain(const DirectX::Image* hMap,float maxHeight,f
 
 			
 
-			pStdVerts[i + 0].set(x0*len, h_val_f0*len, y0*len, ((x0 / side)*repeatU), ((y0 / side)*repeatV), Vect(), Colors::White*h_val_f0);
-			pStdVerts[i + 1].set(x1*len, h_val_f1*len, y1*len, ((x1 / side)*repeatU), ((y1 / side)*repeatV), Vect(), Colors::White*h_val_f1);
-			pStdVerts[i + 2].set(x1*len, h_val_f2*len, y0*len, ((x1 / side)*repeatU), ((y0 / side)*repeatV), Vect(), Colors::White*h_val_f2);
-			pStdVerts[i + 3].set(x0*len, h_val_f3*len, y0*len, ((x0 / side)*repeatU), ((y0 / side)*repeatV), Vect(), Colors::White*h_val_f3);
-			pStdVerts[i + 4].set(x0*len, h_val_f4*len, y1*len, ((x0 / side)*repeatU), ((y1 / side)*repeatV), Vect(), Colors::White*h_val_f4);
-			pStdVerts[i + 5].set(x1*len, h_val_f5*len, y1*len, ((x1 / side)*repeatU), ((y1 / side)*repeatV), Vect(), Colors::White*h_val_f5);
+			pStdVerts[i + 0].set(x0*len, h_val_f0*len, y0*len, ((x0 / side)*repeatU), ((y0 / side)*repeatV), Vect::Up, Colors::White*h_val_f0);
+			pStdVerts[i + 1].set(x1*len, h_val_f1*len, y1*len, ((x1 / side)*repeatU), ((y1 / side)*repeatV), Vect::Up, Colors::White*h_val_f1);
+			pStdVerts[i + 2].set(x1*len, h_val_f2*len, y0*len, ((x1 / side)*repeatU), ((y0 / side)*repeatV), Vect::Up, Colors::White*h_val_f2);
+			pStdVerts[i + 3].set(x0*len, h_val_f3*len, y0*len, ((x0 / side)*repeatU), ((y0 / side)*repeatV), Vect::Up, Colors::White*h_val_f3);
+			pStdVerts[i + 4].set(x0*len, h_val_f4*len, y1*len, ((x0 / side)*repeatU), ((y1 / side)*repeatV), Vect::Up, Colors::White*h_val_f4);
+			pStdVerts[i + 5].set(x1*len, h_val_f5*len, y1*len, ((x1 / side)*repeatU), ((y1 / side)*repeatV), Vect::Up, Colors::White*h_val_f5);
 
 
 		}
 	}
 
-	for (size_t x = 1; x < width - 2; x++)
+	for (size_t x = 0; x < width - 2; x++)
 	{
-		for (size_t y = 1; y < height - 2; y++)
+		for (size_t y = 0; y < height - 2; y++)
 		{
-			size_t i = (y * 6) + (x * 6 * (height-1));
-			if (x == 1 && y == 1) continue;
-				// BL
-				pStdVerts[i].normal =
-					normalHelper(
-
-						pStdVerts[i].Pos,										// p
-						pStdVerts[i + 2].Pos,									// p6
-						pStdVerts[i - 3].Pos,									// p2
-						pStdVerts[i - (int)(6 * height) - 3].Pos,				// p1
-						pStdVerts[i - (int)(6 * height) - 2].Pos,				// p4
-						pStdVerts[i + 4].Pos,									// p8
-						pStdVerts[i + 1].Pos									// p9
-
-					);
-				i++;
-
-				//UR
-				pStdVerts[i].normal =
-					normalHelper(
-
-						pStdVerts[i].Pos,										// p
-						pStdVerts[i + (int)(6 * height)].Pos,									// p6
-						pStdVerts[i + 1].Pos,								// p2
-						pStdVerts[i + 2].Pos,				// p1
-						pStdVerts[i + 3].Pos,				// p4
-						pStdVerts[i + 6].Pos,									// p8
-						pStdVerts[i + (int)(6 * height)+6].Pos									// p9
-
-					);
-				i++;
-
-				//BR
-				pStdVerts[i].normal =
-					normalHelper(
-
-						pStdVerts[i].Pos,										// p
-						pStdVerts[i + (int)(6 * height)].Pos,									// p6
-						pStdVerts[i - 6].Pos,									// p2
-						pStdVerts[i - 8].Pos,				// p1
-						pStdVerts[i + 1].Pos,				// p4
-						pStdVerts[i - 1].Pos,									// p8
-						pStdVerts[i + (int)(6 * height) - 1].Pos									// p9
-
-					);
-				i++;
-
-				//BL2
-				pStdVerts[i].normal =
-					normalHelper(
-
-						pStdVerts[i].Pos,										// p
-						pStdVerts[i - 1].Pos,									// p6
-						pStdVerts[i - 6].Pos,									// p2
-						pStdVerts[i - (int)(6 * height)-6].Pos,				// p1
-						pStdVerts[i - (int)(6 * height)].Pos,				// p4
-						pStdVerts[i + 1].Pos,									// p8
-						pStdVerts[i + 2].Pos									// p9
-
-					);
-				i++;
-
-				//UL
-				pStdVerts[i].normal =
-					normalHelper(
-
-						pStdVerts[i].Pos,										// p
-						pStdVerts[i + 1].Pos,									// p6
-						pStdVerts[i - 1].Pos,									// p2
-						pStdVerts[i - (int)(6 * height) - 1].Pos,				// p1
-						pStdVerts[i - (int)(6 * height)].Pos,				// p4
-						pStdVerts[i + 6].Pos,									// p8
-						pStdVerts[i + 7].Pos									// p9
-
-					);
-				i++;
-
-				//UR2
-				pStdVerts[i].normal =
-					normalHelper(
-
-						pStdVerts[i].Pos,										// p
-						pStdVerts[i + (int)(6 * height)].Pos,									// p6
-						pStdVerts[i - 3].Pos,									// p2
-						pStdVerts[i - 2].Pos,				// p1
-						pStdVerts[i - 1].Pos,				// p4
-						pStdVerts[i + 2].Pos,									// p8
-						pStdVerts[i + (int)(6 * height) + 2].Pos									// p9
-
-					);
-				i++;
+			for (size_t i = 0; i < 6; i++)
+			{
+				int vert = i + (y * 6) + (x * 6 * (height - 1));
+				int rightVert = i + (y * 6) + ((x + 1) * 6 * (height - 1));
+				int upVert = i + ((y + 1) * 6) + (x * 6 * (height - 1));
+				Vect right = pStdVerts[rightVert].Pos - pStdVerts[vert].Pos;
+				Vect up = pStdVerts[upVert].Pos - pStdVerts[vert].Pos;
+				pStdVerts[vert].normal = up.cross(right);
+			}
 		}
 	}
+
 	//assert(numLoops == nverts);
 	int j = 0;
 	for (int i = 0; i < (numTris); i+=2)
