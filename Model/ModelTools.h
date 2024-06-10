@@ -1,8 +1,3 @@
-// ModelTools
-// Support tools to compute bounding volumes on models
-// Ported/adapted from Keenan's FBX Converter code
-// Andre Berthiaume, June 2016
-
 #ifndef _ModelTools
 #define _ModelTools
 
