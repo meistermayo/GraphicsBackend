@@ -48,7 +48,6 @@ Matrix& Matrix::operator *= (const Matrix& t)
 
 Matrix::Matrix(const Quat& inQuat)
 {
-	// todo : optimize
 	float x = inQuat.x;
 	float y = inQuat.y;
 	float z = inQuat.z;
