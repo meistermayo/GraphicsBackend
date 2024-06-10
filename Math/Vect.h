@@ -38,12 +38,13 @@ public:
 	static const Vect One_0;
 
 	Vect()
+		: x(0.f), y(0.f), z(0.f), w(0.f)
 	{
 	};
 
-	Vect(const Vect& tmp)
+	Vect(const Vect& inVect)
 	{
-		this->_m = _mm_set_ps(tmp.w, tmp.z, tmp.y, tmp.x);
+		this->_m = _mm_set_ps(inVect.w, inVect.z, inVect.y, inVect.x);
 	}
 
 	Vect(__m128 _m)
@@ -51,9 +52,9 @@ public:
 		this->_m = _m;
 	}
 
-	Vect& operator = (const Vect& tmp)
+	Vect& operator = (const Vect& inVect)
 	{
-		this->_m = _mm_set_ps(tmp.w, tmp.z, tmp.y, tmp.x);
+		this->_m = _mm_set_ps(inVect.w, inVect.z, inVect.y, inVect.x);
 		return *this;
 	}
 
@@ -79,7 +80,6 @@ public:
 
 	Vect operator + (const Vect& tmp) const
 	{
-		//return Vect(tmp.x + x, tmp.y + y, tmp.z + z, tmp.w + w); // ?
 		__m128 teMp = _mm_add_ps(this->_m, tmp._m);
 
 		Vect v(teMp);
@@ -96,11 +96,6 @@ public:
 
 	Vect operator - (const Vect& tmp) const
 	{
-		/*return Vect(
-			x - tmp.x,
-			y - tmp.y,
-			z - tmp.z,
-			w - tmp.w); */
 		__m128 teMp = _mm_sub_ps(this->_m, tmp._m);
 		Vect v(teMp);
 		v.w = 1.0f;
@@ -114,51 +109,6 @@ public:
 		return *this;
 	}
 
-	/* .. dooo we need this?...
-	Vect operator * (const Vect& tmp) const
-	{
-		//__m128 teMp = _mm_mul_ps(this->_m, tmp._m);
-		//return Vect(teMp);
-
-		Vect _tmp = Vect();
-		_tmp.x = (y * tmp.z) - (z * tmp.y);
-		_tmp.y = (z * tmp.x) - (x * tmp.z);
-		_tmp.z = (x * tmp.y) - (y * tmp.x);
-		_tmp.w = 1.0f;
-		return _tmp;
-	}
-
-	Vect& operator *= (const Vect& tmp)
-	{
-		//	this->_m = _mm_mul_ps(this->_m, tmp._m);
-		Vect t = Vect(x, y, z, w);
-		x = (t.y * tmp.z) - (t.z * tmp.y);
-		y = (t.z * tmp.x) - (t.x * tmp.z);
-		z = (t.x * tmp.y) - (t.y * tmp.x);
-		w = 1.0f;
-		return *this;
-	}
-
-	Vect operator / (const Vect& tmp) const
-	{
-		__m128 teMp = _mm_div_ps(this->_m, tmp._m);
-		Vect v(teMp);
-		v.w = 1.0f;
-		return v;
-
-		//return Vect(x / tmp.x, y / tmp.y, z / tmp.z, w / tmp.w);
-	}
-
-	Vect& operator /= (const Vect& tmp)
-	{
-		this->_m = _mm_div_ps(this->_m, tmp._m);
-		this->w = 1.0f;
-		return *this;
-	}
-	*/
-
-	// Vect operator * (const Vect& v);
-
 	float dot(const Vect& t) const
 	{
 		// Only do the inner product for {x,y,z}
@@ -169,11 +119,11 @@ public:
 	void Normalize()
 	{
 		float n = 1.0f / sqrtf(x * x + y * y + z * z);
+
 		x *= n;
 		y *= n;
 		z *= n;
 		w = 1.0f;
-		// check back on this
 	}
 
 	float GetMag() const { return sqrtf(x * x + y * y + z * z); }
@@ -193,19 +143,6 @@ public:
 			z * inVect.x - x * inVect.z,
 			x * inVect.y - y * inVect.x
 		);
-	/*
-		__m128 v1 = _mm_set_ps(0.0f, x, z, y); // 1,2,0 ordering to save a shuffle
-		__m128 v2 = _mm_set_ps(0.0f, inVect.x, inVect.z, inVect.y);
-		__m128 result = _mm_sub_ps(
-			_mm_mul_ps(v1, _mm_shuffle_ps(v2, v2, _MM_SHUFFLE(3, 1, 0, 2))),
-			_mm_mul_ps(_mm_shuffle_ps(v1, v1, _MM_SHUFFLE(3, 1, 0, 2)), v2)
-		);
-
-		Vect cross;
-		_mm_store_ps(&cross.x, result);
-
-		return cross;
-		*/ // lookin a tthis later OL:::)
 	}
 
 	static float fastInvSqrt(float x) {
@@ -228,14 +165,13 @@ public:
 	Vect operator * (const Matrix& tmp) const;
 	Vect operator *= (const Matrix& tmp) const;
 
-	//Vect operator * (const Matrix &m) const;
-	
-	friend Vect operator * (float scale, const Vect& inV); // noted...
+	friend Vect operator * (float scale, const Vect& inV);
 
 	static void VectLerp(const Vect& a, const Vect& b, const float t, Vect& outVect)
 	{
 		outVect = a + ((b - a) * t);
 	}
+
 public:
 
 	union

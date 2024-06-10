@@ -13,12 +13,6 @@ const Vect Vect::Forward_0	(0.f, 0.f, 1.f, 0.f);
 const Vect Vect::Zero_0		(0.f, 0.f, 0.f, 0.f);
 const Vect Vect::One_0		(1.f, 1.f, 1.f, 0.f);
 
-/*
-Vect Vect::operator * (const Vect& v)
-{
-	return Vect(v.dot(v0), v.dot(v1), v.dot(v2), v.dot(v3));
-}
-*/
 Vect Vect::operator*(const Matrix& tmp) const
 {
 	return Vect
@@ -77,7 +71,7 @@ Vect Vect::operator*=(const Matrix& tmp) const
 	);
 }
 
-Vect operator*(const float scale, const Vect& inV)
+Vect operator*(float inScale, const Vect& inVect)
 {
-	return inV * scale;
+	return inVect * inScale;
 }

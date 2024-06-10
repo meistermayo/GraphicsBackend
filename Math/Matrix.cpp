@@ -14,7 +14,6 @@ const Matrix Matrix::Identity(
 	Vect(0.0f, 0.0f, 0.0f, 1.0f)
 );
 
-//*/
 Matrix Matrix::operator * (const Matrix& t)
 {
 	return Matrix(
@@ -47,23 +46,19 @@ Matrix& Matrix::operator *= (const Matrix& t)
 	return *this;
 }
 
-Matrix::Matrix(const Quat& tmp)
+Matrix::Matrix(const Quat& inQuat)
 {
 	// todo : optimize
-	float x = tmp.x;
-	float y = tmp.y;
-	float z = tmp.z;
-	float w = tmp.w;
+	float x = inQuat.x;
+	float y = inQuat.y;
+	float z = inQuat.z;
+	float w = inQuat.w;
 
 	v0 = Vect(1.f - 2.f*y*y - 2.f*z*z,	2.f*x*y + 2.f*w*z,			2.f*x*z - 2.f*w*y,			0.f);
 	v1 = Vect(2.f*x*y - 2.f*w*z,		1.f - 2.f*x*x - 2.f*z*z,	2.f*y*z + 2.f*w*x,			0.f);
 	v2 = Vect(2.f*x*z - 2.f*w*y,		2.f*y*z - 2.f*w*x,			1.f -2.f*x*x - 2.f*y*y,		0.f);
 	v3 = Vect::Zero;
 }
-//*/
-
-
-// ---  End of File ---------------
 
 Matrix operator*(const Matrix& l, const Matrix& r)
 {

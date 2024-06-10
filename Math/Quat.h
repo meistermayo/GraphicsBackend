@@ -12,12 +12,12 @@ public:
 	Quat()
 		: v(Vect::Zero) {}
 
-	Quat(const Quat& tmp)
-		: v(tmp.v) {}
+	Quat(const Quat& inQuat)
+		: v(inQuat.v) {}
 
-	Quat& operator=(const Quat& tmp)
+	Quat& operator=(const Quat& inQuat)
 	{
-		v = tmp.v;
+		v = inQuat.v;
 		return *this;
 	}
 
@@ -26,7 +26,7 @@ public:
 	Quat(const Vect& inV)
 		: v(inV) {}
 
-	Quat(const Matrix& tmp);
+	Quat(const Matrix& inMatrix);
 
 	Quat GetInverse() const
 	{
@@ -38,12 +38,12 @@ public:
 		return *this;
 	}
 
-	Quat operator-(const Quat& tmp) const
+	Quat operator-(const Quat& inQuat) const
 	{
 		float w1 = w;
 		Vect v1 = v;
-		float w2 = tmp.w;
-		Vect v2 = tmp.v;
+		float w2 = inQuat.w;
+		Vect v2 = inQuat.v;
 
 
 		Quat q(v1 - v2);
@@ -51,12 +51,12 @@ public:
 		return q;
 	}
 
-	Quat operator+(const Quat& tmp) const
+	Quat operator+(const Quat& inQuat) const
 	{
 		float w1 = w;
 		Vect v1 = v;
-		float w2 = tmp.w;
-		Vect v2 = tmp.v;
+		float w2 = inQuat.w;
+		Vect v2 = inQuat.v;
 
 
 		Quat q(v1 + v2);
@@ -79,21 +79,21 @@ public:
 		return q;
 	}
 
-	Quat& operator*(const Quat& tmp) const
+	Quat& operator*(const Quat& inQuat) const
 	{
 		float w1 = w;
 		Vect v1 = v;
-		float w2 = tmp.w;
-		Vect v2 = tmp.v;
+		float w2 = inQuat.w;
+		Vect v2 = inQuat.v;
 
 		Quat q(w1 * v2 + w2 * v1 + v1.cross(v2));
 		q.w = w1 * w2 - v1.dot(v2);
 		return q;
 	}
 
-	float dot(const Quat& other) const
+	float dot(const Quat& inQuat) const
 	{
-		return (w * other.w) + (v.dot(other.v));
+		return (w * inQuat.w) + (v.dot(inQuat.v));
 	}
 
 	void Normalize()
@@ -101,11 +101,10 @@ public:
 		float tmpW = w;
 		float norm = 1.0f / sqrtf(this->dot(*this));
 		v = v * norm;
-		w = tmpW * norm; // ???
+		w = tmpW * norm;
 	}
 	
-	friend Quat operator * (float scale, Quat& inQ); // noted...
-
+	friend Quat operator * (float inScale, Quat& inQuat);
 
 	union
 	{

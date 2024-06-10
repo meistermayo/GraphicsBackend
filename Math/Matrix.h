@@ -47,27 +47,27 @@ public:
 	{
 	}
 
-	Matrix(const Quat& tmp);
+	Matrix(const Quat& inQuat);
 
-	Matrix(const Matrix& tmp)
-		:v0(tmp.v0), v1(tmp.v1), v2(tmp.v2), v3(tmp.v3)
+	Matrix(const Matrix& inTmp)
+		:v0(inTmp.v0), v1(inTmp.v1), v2(inTmp.v2), v3(inTmp.v3)
 	{
 	}
 
-	Matrix(__m128 _v0, __m128 _v1, __m128 _v2, __m128 _v3)
+	Matrix(__m128 inV0, __m128 inV1, __m128 inV2, __m128 inV3)
 	{
-		this->v0 = Vect(_v0);
-		this->v1 = Vect(_v1);
-		this->v2 = Vect(_v2);
-		this->v3 = Vect(_v3);
+		this->v0 = Vect(inV0);
+		this->v1 = Vect(inV1);
+		this->v2 = Vect(inV2);
+		this->v3 = Vect(inV3);
 	}
 
-	Matrix operator=(const Matrix& tmp)
+	Matrix operator=(const Matrix& inTmp)
 	{
-		v0 = tmp.v0;
-		v1 = tmp.v1;
-		v2 = tmp.v2;
-		v3 = tmp.v3;
+		v0 = inTmp.v0;
+		v1 = inTmp.v1;
+		v2 = inTmp.v2;
+		v3 = inTmp.v3;
 
 		return *this;
 	}
@@ -76,25 +76,24 @@ public:
 	{
 	}
 
-	//optimize me
-	Matrix(const Vect& tV0, const Vect& tV1, const Vect& tV2, const Vect& tV3)
-		:v0(tV0), v1(tV1), v2(tV2), v3(tV3)
+	Matrix(const Vect& inV0, const Vect& inV1, const Vect& inV2, const Vect& inV3)
+		:v0(inV0), v1(inV1), v2(inV2), v3(inV3)
 	{
 	}
 
-	static Matrix Trans(const Vect& t) { return Matrix(Vect::Right_0, Vect::Up_0, Vect::Forward_0, t); }
+	static Matrix Trans(const Vect& inTrans) { return Matrix(Vect::Right_0, Vect::Up_0, Vect::Forward_0, inTrans); }
 	static Matrix Trans(float x, float y, float z) { return Matrix(Vect::Right_0, Vect::Up_0, Vect::Forward_0, Vect(x,y,z)); }
 	static Matrix Scale(float s) { return Matrix(Vect::Right_0 * s, Vect::Up_0 * s, Vect::Forward_0 * s, Vect::Zero); }
 	static Matrix Scale(float x, float y, float z) { return Matrix(Vect::Right_0 * x, Vect::Up_0 * y, Vect::Forward_0 * z, Vect::Zero); }
-	static Matrix Scale(const Vect& s) { return Matrix(Vect::Right_0 * s.x, Vect::Up_0 * s.y, Vect::Forward_0 * s.z, Vect::Zero); }
+	static Matrix Scale(const Vect& inScale) { return Matrix(Vect::Right_0 * inScale.x, Vect::Up_0 * inScale.y, Vect::Forward_0 * inScale.z, Vect::Zero); }
 
-	static Matrix RotAxisAngle(const Vect& axis, float angle) {
+	static Matrix RotAxisAngle(const Vect& inAxis, float inAngle) {
 		
-		float c = cosf(angle);
-		float s = sinf(angle);
+		float c = cosf(inAngle);
+		float s = sinf(inAngle);
 		float t = 1.f - c;
 
-		Vect naxis = axis.GetNormalized();
+		Vect naxis = inAxis.GetNormalized();
 		float x = naxis.x, y = naxis.y, z = naxis.z;
 
 		// opt me
@@ -108,7 +107,6 @@ public:
 	
 	static Matrix Matrix::RotOrient(const Vect& newFwd, const Vect& newUp)
 	{
-		// maybe need to uhhhhhh this? todo
 		return Matrix (
 			newUp.cross(newFwd),
 			newUp,
@@ -165,23 +163,23 @@ public:
 	}
 
 	// opt me
-	static Matrix RotX(float angle) { return RotAxisAngle(Vect::Right, angle); }
-	static Matrix RotY(float angle) { return RotAxisAngle(Vect::Up, angle); }
-	static Matrix RotZ(float angle) { return RotAxisAngle(Vect::Forward, angle); }
+	static Matrix RotX(float inAngle) { return RotAxisAngle(Vect::Right, inAngle); }
+	static Matrix RotY(float inAngle) { return RotAxisAngle(Vect::Up, inAngle); }
+	static Matrix RotZ(float inAngle) { return RotAxisAngle(Vect::Forward, inAngle); }
 
-	void SetTrans(const Vect& t) { v3 = t; }
+	void SetTrans(const Vect& inTrans) { v3 = inTrans; }
 	const Vect& GetTrans() const { return v3; }
 
 	friend Matrix operator * (const Matrix& l, const Matrix& r);
 	Matrix operator * (const Matrix& t);
 
-	Matrix operator * (float s)
+	Matrix operator * (float inScale)
 	{
 		return Matrix(
-			v0 * s,
-			v1 * s,
-			v2 * s,
-			v3 * s
+			v0 * inScale,
+			v1 * inScale,
+			v2 * inScale,
+			v3 * inScale
 		);
 	}
 
