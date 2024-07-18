@@ -11,7 +11,7 @@ class Texture
 {
 public:
 	Texture(const Texture&) = default;				
-	Texture(Texture&&) = delete;                  
+	Texture(Texture&&) = default;                  
 	Texture& operator=(const Texture&) & = delete;
 	Texture& operator=(Texture&&) & = delete;     
 	~Texture();									  

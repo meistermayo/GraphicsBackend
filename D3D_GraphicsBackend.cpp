@@ -2,6 +2,7 @@
 #include "d3dUtil.h"
 
 #ifdef BACKEND_D3D
+#define SAMPLE_MASK_ALL 0xFFFFFFFF
 
 void D3D_GraphicsBackend::SetData(HINSTANCE hInstance, int inCmdShow)
 {
@@ -77,6 +78,7 @@ void D3D_GraphicsBackend::privCleanupApp()
 {
 	ReleaseAndDeleteCOMobject(mRenderTargetView);
 	ReleaseAndDeleteCOMobject(mpDepthStencilView);
+	ReleaseAndDeleteCOMobject(mpBlendState);
 	ReleaseAndDeleteCOMobject(mSwapChain);
 	ReleaseAndDeleteCOMobject(mCon.md3dImmediateContext);
 	
@@ -131,6 +133,11 @@ void D3D_GraphicsBackend::privSetDrawModeWireframe() const
 	mCon.md3dImmediateContext->RSSetState(rsWireframe);
 }
 
+void D3D_GraphicsBackend::privSetBlendMode(bool inBlendEnabled) const
+{
+	mCon.md3dImmediateContext->OMSetBlendState(inBlendEnabled ? mpBlendState : nullptr, nullptr, SAMPLE_MASK_ALL);
+}
+
 void D3D_GraphicsBackend::InitDirect3D()
 {
 	HRESULT hr = S_OK;
@@ -171,8 +178,8 @@ void D3D_GraphicsBackend::InitDirect3D()
 	// - MUST be the same for depth buffer!
 	// - We _need_ to work with the depth buffer because reasons... (see below)
 	DXGI_SAMPLE_DESC sampDesc;
-	sampDesc.Count = 1;
-	sampDesc.Quality = static_cast<UINT>(D3D11_CENTER_MULTISAMPLE_PATTERN);  // MS: what's with the type mismtach?
+	sampDesc.Count = 4;
+	sampDesc.Quality = static_cast<UINT>(D3D11_STANDARD_MULTISAMPLE_PATTERN);  // MS: what's with the type mismtach?
 
 	DXGI_MODE_DESC buffdesc;				// https://msdn.microsoft.com/en-us/library/windows/desktop/bb173064(v=vs.85).aspx
 	ZeroMemory(&buffdesc, sizeof(buffdesc));
@@ -251,6 +258,7 @@ void D3D_GraphicsBackend::InitDirect3D()
 	assert(SUCCEEDED(hr));
 
 	// Create the depth stencil view
+	//*/
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
 	ZeroMemory(&descDSV, sizeof(descDSV));
 	descDSV.Format = descDepth.Format;
@@ -260,12 +268,26 @@ void D3D_GraphicsBackend::InitDirect3D()
 	hr = mDev.md3dDevice->CreateDepthStencilView(pDepthStencil, &descDSV, &mpDepthStencilView);
 	assert(SUCCEEDED(hr));
 	ReleaseAndDeleteCOMobject(pDepthStencil);
-	//*/
-
 	/**********************************************************/
 
-	//mCon.md3dImmediateContext->OMSetRenderTargets(1, &mRenderTargetView, nullptr);  // to use without depth stencil
 	mCon.md3dImmediateContext->OMSetRenderTargets(1, &mRenderTargetView, mpDepthStencilView);
+
+	// Blending
+	D3D11_BLEND_DESC descBl = {};
+	ZeroMemory(&descBl, sizeof(descBl));
+	descBl.AlphaToCoverageEnable = FALSE;
+	descBl.RenderTarget[0].BlendEnable = TRUE;
+	descBl.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	descBl.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	descBl.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	descBl.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	descBl.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	descBl.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	descBl.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	hr = mDev.md3dDevice->CreateBlendState(&descBl, &mpBlendState);
+	assert(SUCCEEDED(hr));
+	mCon.md3dImmediateContext->OMSetBlendState(nullptr, nullptr, SAMPLE_MASK_ALL);
 
 	// Setup the viewport
 	D3D11_VIEWPORT vp;

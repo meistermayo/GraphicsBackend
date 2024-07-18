@@ -43,6 +43,7 @@ protected:
 	virtual void privDrawIndexed(int indexCount, int startIndex, int baseVertex) const = 0;
 	virtual void privSetDrawModeFill() const = 0;
 	virtual void privSetDrawModeWireframe() const = 0;
+	virtual void privSetBlendMode(bool inBlendEnabled) const = 0;
 
 	virtual const GraphicsDevice& privGetDevice() const = 0;
 	virtual const GraphicsContext& privGetContext() const = 0;
@@ -242,6 +243,7 @@ struct ShaderInterface : public Align16
 
 #endif
 	}
+
 	void DefineInputLayoutTex()
 	{
 #ifdef BACKEND_D3D
@@ -292,6 +294,7 @@ class D3D_GraphicsBackend : public GraphicsBackend_Base
 	GraphicsContext mCon;						// Settings for the GPU to use
 	IDXGISwapChain* mSwapChain;					// image buffers used for rendering
 	ID3D11RenderTargetView* mRenderTargetView;	// Where to send rendring operations (typically: points to one of the swap buffers)
+	ID3D11BlendState* mpBlendState;				// Blend State :)
 	ID3D11DepthStencilView* mpDepthStencilView; // Needed to force depth-buffer operations
 	
 	ID3D11RasterizerState* rsFill;
@@ -321,6 +324,7 @@ protected:
 	virtual void privSetPrimitiveTopologyAsTriList() const override;
 	virtual void privSetDrawModeFill() const override;
 	virtual void privSetDrawModeWireframe() const override;
+	virtual void privSetBlendMode(bool inBlendEnabled) const override;
 
 	virtual const GraphicsDevice& privGetDevice() const override;
 	virtual const GraphicsContext& privGetContext() const override;
@@ -430,6 +434,8 @@ public:
 	static void SetClearColor(float r, float g, float b, float a = 1.0f) { Instance()->privSetClearColor(r, g, b, a); }
 	static void SetDrawModeFill() { Instance()->privSetDrawModeFill(); }
 	static void SetDrawModeWireframe() { Instance()->privSetDrawModeWireframe(); }
+	static void SetBlendMode(bool inBlendEnabled) { Instance()->privSetBlendMode(inBlendEnabled); }
+
 	static void SetPrimitiveTopologyAsTriList() { Instance()->privSetPrimitiveTopologyAsTriList(); }
 	static void DrawIndexed(int indexCount, int startIndex, int baseVertex) { Instance()->privDrawIndexed(indexCount, startIndex, baseVertex); }
 
