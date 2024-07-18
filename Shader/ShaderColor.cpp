@@ -4,7 +4,7 @@
 #include <d3d11.h>
 #include <assert.h>
 
-ShaderColor::ShaderColor(std::string filename)
+ShaderColor::ShaderColor(const std::string& filename)
 	: ShaderBase(filename)
 {
 	mpShaderInterface->DefineInputLayout();

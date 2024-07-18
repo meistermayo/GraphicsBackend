@@ -15,7 +15,7 @@ public:
 	ShaderWireframe& operator=(ShaderWireframe&&) & = default;      
 	~ShaderWireframe();		  										
 
-	ShaderWireframe(std::string filename);
+	ShaderWireframe(const std::string& filename);
 	ShaderWireframe() = delete;
 
 	virtual void SetToContext() override;

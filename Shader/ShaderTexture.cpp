@@ -4,7 +4,7 @@
 #include "../GraphicsBackend.h"
 #include <assert.h>
 
-ShaderTexture::ShaderTexture(std::string filename) :
+ShaderTexture::ShaderTexture(const std::string& filename) :
 	ShaderBase(filename)
 {
 	mpShaderInterface->DefineInputLayoutTex();

@@ -165,7 +165,7 @@ struct TextureSampler : public Align16
 #endif
 
 #ifdef BACKEND_D3D
-	void LoadTexture(std::string filepath, bool ComputeMip = false, size_t miplevel = 0, uint32_t filterflags = DirectX::TEX_FILTER_LINEAR);
+	void LoadTexture(const std::string& filepath, bool ComputeMip = false, size_t miplevel = 0, uint32_t filterflags = DirectX::TEX_FILTER_LINEAR);
 	void LoadColorTexture(Vect color);
 	void CreateSampleState(uint32_t filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR, uint32_t isotropic_level = 4);
 #endif BACKEND_D3D
@@ -192,7 +192,10 @@ struct ShaderInterface : public Align16
 #endif
 
 	// Compile and send the VS and PS shaders to the GPU
-	void BuildShaders(std::string filename);
+	// We could make this non-const, as we will
+	// end up copying the string for backend extensions.
+	// However this use case is not clear from the interface.
+	void BuildShaders(const std::string& filename);
 
 	void CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* layoutdesc, UINT size);
 

@@ -16,7 +16,7 @@ protected:
 public:
 	virtual void SetToContext() {};
 
-	ShaderBase(std::string filename);
+	ShaderBase(const std::string& filename);
 	ShaderBase(const ShaderBase&) = default;				
 	ShaderBase(ShaderBase&&) = delete;						
 	ShaderBase& operator=(const ShaderBase&) & = delete;	

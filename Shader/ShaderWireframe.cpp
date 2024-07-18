@@ -7,7 +7,7 @@
 #include "../GraphicsBackend.h"
 
 
-ShaderWireframe::ShaderWireframe(std::string filename)
+ShaderWireframe::ShaderWireframe(const std::string& filename)
 	: ShaderBase(filename)
 {
 	mpShaderInterface->DefineInputLayout();

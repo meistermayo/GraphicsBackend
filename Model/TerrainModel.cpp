@@ -3,7 +3,7 @@
 #include "Graphics/GraphicsBackend.h"
 #include <assert.h>
 
-TerrainModel::TerrainModel(std::string heightmapFile, float len, float maxheight, float ytrans, int RepeatU, int RepeatV)
+TerrainModel::TerrainModel(const std::string& heightmapFile, float len, float maxheight, float ytrans, int RepeatU, int RepeatV)
 	: Model()
 {
 	ytrans;

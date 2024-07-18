@@ -16,7 +16,7 @@ public:
 	ShaderColorLightTexture& operator=(ShaderColorLightTexture&&) & = default;       
 	~ShaderColorLightTexture();		  				
 	ShaderColorLightTexture() = delete;
-	ShaderColorLightTexture(std::string filename);
+	ShaderColorLightTexture(const std::string& filename);
 
 	virtual void SetToContext() override;
 

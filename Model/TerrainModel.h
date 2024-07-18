@@ -22,7 +22,7 @@ private:
 	Vect normalHelper(Vect p, Vect p6, Vect p2, Vect p1, Vect p4, Vect p8, Vect p9);
 
 public:
-	TerrainModel(std::string heightmapFile, float len, float maxheight, float ytrans, int RepeatU, int RepeatV);
+	TerrainModel(const std::string& heightmapFile, float len, float maxheight, float ytrans, int RepeatU, int RepeatV);
 	Matrix GetWorldMat() { return WorldMat; }
 };
 

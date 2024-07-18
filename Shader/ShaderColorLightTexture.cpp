@@ -4,7 +4,7 @@
 #include <d3d11.h>
 #include <assert.h>
 
-ShaderColorLightTexture::ShaderColorLightTexture(std::string filename)
+ShaderColorLightTexture::ShaderColorLightTexture(const std::string& filename)
 	: ShaderBase(filename)
 {
 	mpShaderInterface->DefineInputLayoutNormalTex();

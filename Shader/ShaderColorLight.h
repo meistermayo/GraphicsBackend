@@ -17,7 +17,7 @@ public:
 	ShaderColorLight& operator=(ShaderColorLight&&) & = default;       
 	~ShaderColorLight();		  									
 
-	ShaderColorLight(std::string filename);
+	ShaderColorLight(const std::string& filename);
 	ShaderColorLight() = delete;
 
 	virtual void SetToContext() override;

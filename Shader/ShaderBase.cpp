@@ -7,7 +7,7 @@
 #include "../GraphicsBackend.h"
 #include "../d3dUtil.h"
 
-ShaderBase::ShaderBase(std::string filename)
+ShaderBase::ShaderBase(const std::string& filename)
 {
 	mpShaderInterface = new ShaderInterface();
 	mpShaderInterface->BuildShaders(filename);

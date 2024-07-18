@@ -17,8 +17,8 @@ public:
 	~Texture();									  
 	Texture() = delete;
 
-	Texture(std::string filepath);
-	Texture(std::string filepath, uint32_t filter, uint32_t isotropic_level, bool ComputeMip, size_t miplevel, uint32_t filterflags);
+	Texture(const std::string& filepath);
+	Texture(const std::string& filepath, uint32_t filter, uint32_t isotropic_level, bool ComputeMip, size_t miplevel, uint32_t filterflags);
 	Texture(float r, float g, float b, float a = 1.0f);
 
 	void SetToContext(int texResSlot = 0, int sampSlot = 0);

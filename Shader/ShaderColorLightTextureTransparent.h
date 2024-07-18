@@ -16,7 +16,7 @@ public:
 	ShaderColorLightTextureTransparent& operator=(ShaderColorLightTextureTransparent&&) & = default;
 	~ShaderColorLightTextureTransparent();
 	ShaderColorLightTextureTransparent() = delete;
-	ShaderColorLightTextureTransparent(std::string filename);
+	ShaderColorLightTextureTransparent(const std::string& filename);
 
 	virtual void SetToContext() override;
 

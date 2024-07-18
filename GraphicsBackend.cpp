@@ -87,7 +87,7 @@ IndexBufferObject::~IndexBufferObject()
 	ReleaseAndDeleteCOMobject(mpIndexBuffer);
 }
 
-void TextureSampler::LoadTexture(std::string filepath, bool ComputeMip, size_t miplevel, uint32_t filterflags)
+void TextureSampler::LoadTexture(const std::string& filepath, bool ComputeMip, size_t miplevel, uint32_t filterflags)
 {
 #ifdef BACKEND_D3D
 	std::wstring lpFilepath;
@@ -187,16 +187,22 @@ TextureSampler::~TextureSampler()
 #endif
 }
 
-void ShaderInterface::BuildShaders(std::string filename)
+void ShaderInterface::BuildShaders(const std::string& filename)
 {
 #ifdef BACKEND_D3D
 	LPCSTR wVsModel = "vs_4_0";
 	LPCSTR wPsModel = "ps_4_0";
 
+	std::string filenameWithExt;
 	if (filename.find_last_of('.') == std::string::npos)
 	{
-		filename += GraphicsBackend::GetVertexShaderExt();
+		filenameWithExt = filename + GraphicsBackend::GetVertexShaderExt();
 	}
+	else
+	{
+		filenameWithExt = filename;
+	}
+
 	std::wstring wFilestr;
 	stringToWString(filename, wFilestr);
 	const WCHAR* wFilename = wFilestr.c_str();

@@ -10,7 +10,7 @@ struct GenericBufferObject;
 class ShaderTexture : public ShaderBase
 {
 public:
-	ShaderTexture(std::string filename);
+	ShaderTexture(const std::string& filename);
 	ShaderTexture() = delete;
 	~ShaderTexture();
 
