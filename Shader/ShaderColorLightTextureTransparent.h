@@ -121,14 +121,11 @@ private:
 public:
 	struct AlphaData {
 		float alpha = 0.75f;
-		float test = 0.75f;
-		float test1 = 0.75f;
-		float test3 = 0.75f;
-		float test5 = 0.75f;
+		char padding[12];
 	};
 
 private:
-	GenericBufferObject<float>* mpAlphaData;
+	GenericBufferObject<AlphaData>* mpAlphaData;
 };
 
 #endif _ShaderColorLight

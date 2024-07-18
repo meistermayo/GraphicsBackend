@@ -276,7 +276,7 @@ void D3D_GraphicsBackend::InitDirect3D()
 	D3D11_BLEND_DESC descBl = {};
 	ZeroMemory(&descBl, sizeof(descBl));
 	descBl.AlphaToCoverageEnable = FALSE;
-	descBl.RenderTarget[0].BlendEnable = FALSE;
+	descBl.RenderTarget[0].BlendEnable = TRUE;
 	descBl.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 	descBl.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 	descBl.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;

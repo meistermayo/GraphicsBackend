@@ -21,7 +21,7 @@ ShaderColorLightTextureTransparent::ShaderColorLightTextureTransparent(std::stri
 	mpFog = new GenericBufferObject<FogData>();
 	mpFog->CreateBuffer(3);
 
-	mpAlphaData = new GenericBufferObject<float>();
+	mpAlphaData = new GenericBufferObject<AlphaData>();
 	mpAlphaData->CreateBuffer(4);
 
 	SendLightParameters(Vect::Zero);
@@ -140,7 +140,7 @@ void ShaderColorLightTextureTransparent::SendAlphaData(float alpha)
 {
 	AlphaData ad;
 	ad.alpha = alpha;
-	mpAlphaData->UpdateBuffer(&alpha);
+	mpAlphaData->UpdateBuffer(&ad);
 }
 
 void ShaderColorLightTextureTransparent::SetToContext()

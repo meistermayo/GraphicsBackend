@@ -5,6 +5,7 @@
 #include "../Model/Model.h"
 #include "../Shader/ShaderColorLightTextureTransparent.h"
 #include "../Texture/Texture.h"
+#include <Graphics/GraphicsBackend.h>
 
 
 GraphicsObject_TextureLightTransparent::GraphicsObject_TextureLightTransparent(ShaderColorLightTextureTransparent* inShader, Model* inModel, float inAlpha)
@@ -27,6 +28,9 @@ GraphicsObject_TextureLightTransparent::GraphicsObject_TextureLightTransparent(M
 	pModel = inModel;
 	pTex = new Texture * [inModel->GetMeshCount()];
 	pTex[0] = inTexture;
+	pTex[1] = inTexture;
+	pTex[2] = inTexture;
+	pTex[3] = inTexture;
 	mWorld = Matrix::Identity;
 }
 
@@ -42,6 +46,7 @@ void GraphicsObject_TextureLightTransparent::SetTexture(Texture* inTex, int i)
 
 void GraphicsObject_TextureLightTransparent::Render(Camera* inCamera)
 {
+	GraphicsBackend::SetBlendMode(true);
 	pModel->BindVertexIndexBuffers();
 	pShader->SendWorldAndMaterial(mWorld, mAmbColor, mDifColor, Vect::One);
 	pShader->SendCamMatrices(inCamera->getViewMatrix(), inCamera->getProjMatrix());
@@ -52,4 +57,5 @@ void GraphicsObject_TextureLightTransparent::Render(Camera* inCamera)
 		pTex[i]->SetToContext();
 		pModel->RenderMesh(i);
 	}
+	GraphicsBackend::SetBlendMode(false);
 }
