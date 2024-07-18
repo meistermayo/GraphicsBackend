@@ -445,7 +445,7 @@ public:
 };
 
 #ifdef BACKEND_D3D
-std::wstring stringToWString(std::string inStr);
+void stringToWString(const std::string& inStr, std::wstring& outStr);
 
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {

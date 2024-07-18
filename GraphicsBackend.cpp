@@ -8,17 +8,18 @@
 #include <d3dcommon.h>
 #endif
 
-std::wstring stringToWString(std::string inStr)
+void stringToWString(const std::string& inStr, std::wstring& outStr)
 {
 	// this resizes by inStr.size() scales by wchar_t-sizes, not bytes.
-	std::wstring wStr;
-	wStr.resize(inStr.size());
+	// plus, the str resizes specifically pre-populate the string with 0's if no char is specified.
+	outStr.resize(inStr.size());
 
-	// may have to check this later... seems to return 0 which *should* indicate a failure...
-	// but it doesn't fail what I want it to do, which is return a compabitble wchar string...
-	MultiByteToWideChar(CP_ACP, 0, inStr.c_str(), -1, &wStr[0], inStr.size());
-
-	return wStr;
+	int result = MultiByteToWideChar(CP_ACP, 0, inStr.c_str(), inStr.size(), &outStr[0], outStr.size());
+	if (result == 0)
+	{
+		DWORD err = GetLastError();
+		assert(err == 0);
+	}
 }
 
 GraphicsBackend_Base* GraphicsBackend::pInst = nullptr;
@@ -89,7 +90,8 @@ IndexBufferObject::~IndexBufferObject()
 void TextureSampler::LoadTexture(std::string filepath, bool ComputeMip, size_t miplevel, uint32_t filterflags)
 {
 #ifdef BACKEND_D3D
-	std::wstring lpFilepath = stringToWString(filepath);
+	std::wstring lpFilepath;
+	stringToWString(filepath, lpFilepath);
 
 	size_t pos = lpFilepath.find_last_of(L'.');
 	std::wstring ext = lpFilepath.substr(pos + 1);
@@ -195,7 +197,8 @@ void ShaderInterface::BuildShaders(std::string filename)
 	{
 		filename += GraphicsBackend::GetVertexShaderExt();
 	}
-	std::wstring wFilestr = stringToWString(filename);
+	std::wstring wFilestr;
+	stringToWString(filename, wFilestr);
 	const WCHAR* wFilename = wFilestr.c_str();
 
 	pVSBlob = nullptr;

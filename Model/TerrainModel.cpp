@@ -8,7 +8,9 @@ TerrainModel::TerrainModel(std::string heightmapFile, float len, float maxheight
 {
 	ytrans;
 	DirectX::ScratchImage scrtTex;
-	HRESULT hr = LoadFromTGAFile(stringToWString(heightmapFile).c_str(), nullptr, scrtTex); // todo
+	std::wstring lpFilepath;
+	stringToWString(heightmapFile, lpFilepath);
+	HRESULT hr = LoadFromTGAFile(lpFilepath.c_str(), nullptr, scrtTex); // todo
 	assert(SUCCEEDED(hr));
 
 	const DirectX::Image* hgtmap = scrtTex.GetImage(0, 0, 0);
