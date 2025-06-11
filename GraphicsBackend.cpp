@@ -117,7 +117,7 @@ void TextureSampler::LoadTexture(const std::string& filepath, bool ComputeMip, s
 	{
 		assert(scrtTex.GetImageCount() == 1 && "ERROR: File already contains MIP map.");
 		DirectX::ScratchImage mipchain;
-		hr = DirectX::GenerateMipMaps(*(scrtTex.GetImage(0, 0, 0)), filterflags, miplevel, mipchain);
+		hr = DirectX::GenerateMipMaps(*(scrtTex.GetImage(0, 0, 0)), (DirectX::TEX_FILTER_FLAGS)filterflags, miplevel, mipchain);
 		assert(SUCCEEDED(hr));
 
 		CreateShaderResourceView(GraphicsBackend::GetDevice().md3dDevice, mipchain.GetImage(0, 0, 0), mipchain.GetImageCount(), mipchain.GetMetadata(), &mpTextureRV);
