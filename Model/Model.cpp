@@ -1,9 +1,10 @@
 #include <assert.h>
+#include <iostream>
+#include <fstream>
 #include "Model.h"
 
 #include "../d3dUtil.h"
 #include "../GraphicsBackend.h"
-#include "File.h"
 #include "ModelTools.h"
 #include "AzulFileHdr.h"
 #include "MeshSeparator.h"
@@ -107,20 +108,11 @@ Model::~Model()
 
 void Model::privLoadDataFromFile(const char* const inModelName, StandardVertex*& outVerts, int& outVertCount, TriangleByIndex*& outTriList, int& outTriCount, bool inFlipU, bool inFlipV, float inScale)
 {
-	// Read from file
-	FileHandle fh;
-	FileError  ferror;
+	std::ifstream file(inModelName, std::ios::binary);
+	assert(file);
 
-	ferror = File::open(fh, inModelName, FILE_READ);
-	assert(ferror == FILE_SUCCESS);
-
-	// GEt the file format for the data
+	// Get the file format for the data
 	AzulFileHdr  azulFileHdr;
-
-	// **** Overly complicated detour Part 1:  The vertex data in the file is packed efficiently
-	// whereas our StandardVertex is not. Something I shall fix form the start next time.
-	// For time time: we will read in the data into a temp array and then manually copy the data into
-	// the StandardVertex array. 
 
 	struct VertexStride_VUN
 	{
@@ -168,8 +160,7 @@ void Model::privLoadDataFromFile(const char* const inModelName, StandardVertex*&
 
 
 	// Read the header
-	ferror = File::read(fh, &azulFileHdr, sizeof(AzulFileHdr));
-	assert(ferror == FILE_SUCCESS);
+	assert(file.read((char*)&azulFileHdr, sizeof(AzulFileHdr)));
 
 	// create the vertex buffer
 	outVertCount = azulFileHdr.numVerts;
@@ -177,12 +168,10 @@ void Model::privLoadDataFromFile(const char* const inModelName, StandardVertex*&
 
 	// load the verts
 	// seek to the location
-	ferror = File::seek(fh, FILE_SEEK_BEGIN, azulFileHdr.vertBufferOffset);
-	assert(ferror == FILE_SUCCESS);
+	assert(file.seekg(azulFileHdr.vertBufferOffset));
 
 	// read it
-	ferror = File::read(fh, pTmpVerts, outVertCount * sizeof(VertexStride_VUN));
-	assert(ferror == FILE_SUCCESS);
+	assert(file.read((char*)pTmpVerts, outVertCount * sizeof(VertexStride_VUN)));
 
 	// create the triLists buffer
 	outTriCount = azulFileHdr.numTriangles;
@@ -190,16 +179,14 @@ void Model::privLoadDataFromFile(const char* const inModelName, StandardVertex*&
 
 	// load the triList
 	// seek to the location
-	ferror = File::seek(fh, FILE_SEEK_BEGIN, azulFileHdr.triangleListBufferOffset);
-	assert(ferror == FILE_SUCCESS);
+	assert(file.seekg(azulFileHdr.triangleListBufferOffset));
 
 	// read it
-	ferror = File::read(fh, outTriList, outTriCount * sizeof(TriangleByIndex));
-	assert(ferror == FILE_SUCCESS);
+	assert(file.read((char*)outTriList, outTriCount * sizeof(TriangleByIndex)));
 
 	// close
-	ferror = File::close(fh);
-	assert(ferror == FILE_SUCCESS);
+	file.close();
+	assert(!file.is_open());
 
 	// **** Overly complicated detour Part 2: now we copy the vertex data into our StandardVertex
 	outVerts = new StandardVertex[outVertCount];
