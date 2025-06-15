@@ -1,5 +1,6 @@
 #include "GraphicsBackend.h"
 #include "Model/Model.h"
+#include "windows.h"
 
 #ifdef BACKEND_D3D
 #include <d3d11.h>
@@ -45,7 +46,12 @@ void VertexBufferObject::LoadToGPU()
 
 VertexBufferObject::~VertexBufferObject()
 {
+#ifdef BACKEND_D3D
 	ReleaseAndDeleteCOMobject(mpVertexBuffer);
+#endif
+#ifdef BACKEND_OGL
+
+#endif
 }
 
 void VertexBufferObject::Bind()
@@ -84,7 +90,12 @@ void IndexBufferObject::Bind()
 
 IndexBufferObject::~IndexBufferObject()
 {
+#ifdef BACKEND_D3D
 	ReleaseAndDeleteCOMobject(mpIndexBuffer);
+#endif
+#ifdef BACKEND_OGL
+
+#endif
 }
 
 void TextureSampler::LoadTexture(const std::string& filepath, bool ComputeMip, size_t miplevel, uint32_t filterflags)
@@ -224,14 +235,21 @@ void ShaderInterface::BuildShaders(const std::string& filename)
 #endif
 }
 
+#ifdef BACKEND_D3D
 void ShaderInterface::CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* layoutdesc, UINT size)
 {
-#ifdef BACKEND_D3D
 	// Create the input layout
 	HRESULT hr = GraphicsBackend::GetDevice().md3dDevice->CreateInputLayout(layoutdesc, size, pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), &mpVertexLayout);
 	assert(SUCCEEDED(hr));
-#endif
 }
+#endif
+
+#ifdef BACKEND_OGL
+void ShaderInterface::CreateInputLayout()
+{
+	// idk
+}
+#endif
 
 // Sets the DX context to use these VS, PS and input layout
 void ShaderInterface::SetToContext_VS_PS_InputLayout()
@@ -280,6 +298,8 @@ HRESULT ShaderInterface::CompileShaderFromFileD3D(const WCHAR* szFileName, LPCST
 	return S_OK;
 }
 
+#endif
+
 ShaderInterface::~ShaderInterface()
 {
 #ifdef BACKEND_D3D
@@ -290,5 +310,3 @@ ShaderInterface::~ShaderInterface()
 	ReleaseAndDeleteCOMobject(mpVertexLayout);
 #endif
 }
-
-#endif

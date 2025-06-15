@@ -107,8 +107,6 @@ void D3D_GraphicsBackend::privSetClearColor(float r, float g, float b, float a)
 	mCon.md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, VasA(col));
 }
 
-const GraphicsDevice& D3D_GraphicsBackend::privGetDevice() const { return mDev; }
-const GraphicsContext& D3D_GraphicsBackend::privGetContext() const { return mCon; }
 const std::string& D3D_GraphicsBackend::privGetBackendFolder() const { return mBackendFolder; }
 const std::string& D3D_GraphicsBackend::privGetVertexShaderExt() const { return mVertexShaderExt; }
 const std::string& D3D_GraphicsBackend::privGetFragmentShaderExt() const { return mFragmentShaderExt; }
